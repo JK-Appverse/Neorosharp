@@ -132,10 +132,10 @@ export default function DirectionalSwipe({ onBack }: { onBack: () => void }) {
       </Card>
 
       <div className="grid grid-cols-2 gap-4">
-        <Button variant="outline" className="h-20 rounded-2xl border-2 hover:bg-slate-50" onClick={() => handleMove('up')}><ArrowUp className="w-8 h-8" /></Button>
-        <Button variant="outline" className="h-20 rounded-2xl border-2 hover:bg-slate-50" onClick={() => handleMove('down')}><ArrowDown className="w-8 h-8" /></Button>
-        <Button variant="outline" className="h-20 rounded-2xl border-2 hover:bg-slate-50" onClick={() => handleMove('left')}><ArrowLeftIcon className="w-8 h-8" /></Button>
-        <Button variant="outline" className="h-20 rounded-2xl border-2 hover:bg-slate-50" onClick={() => handleMove('right')}><ArrowRight className="w-8 h-8" /></Button>
+        <Button variant="outline" className="h-20 rounded-2xl border-2 hover:bg-slate-200" onClick={() => handleMove('up')}><ArrowUp className="w-8 h-8" /></Button>
+        <Button variant="outline" className="h-20 rounded-2xl border-2 hover:bg-slate-200" onClick={() => handleMove('down')}><ArrowDown className="w-8 h-8" /></Button>
+        <Button variant="outline" className="h-20 rounded-2xl border-2 hover:bg-slate-200" onClick={() => handleMove('left')}><ArrowLeftIcon className="w-8 h-8" /></Button>
+        <Button variant="outline" className="h-20 rounded-2xl border-2 hover:bg-slate-200" onClick={() => handleMove('right')}><ArrowRight className="w-8 h-8" /></Button>
       </div>
     </div>
   );
