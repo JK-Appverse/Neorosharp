@@ -15,7 +15,6 @@ type Puzzle = {
   options: string[];
   answer: string;
   explanation: string;
-  timeLimit: number;
 };
 
 const PUZZLES: Puzzle[] = [
@@ -26,7 +25,6 @@ const PUZZLES: Puzzle[] = [
     options: ["Logic is TRUE", "Logic is FALSE"],
     answer: "Logic is FALSE",
     explanation: "Standard Syllogism trap. Just because some cats are blue doesn't mean lions (who are cats) must be blue.",
-    timeLimit: 10
   },
   {
     id: 2,
@@ -35,7 +33,6 @@ const PUZZLES: Puzzle[] = [
     options: ["S", "E", "N", "T"],
     answer: "E",
     explanation: "These are the first letters of numbers: One, Two, Three, Four, Five, Six, Seven. The next is Eight (E).",
-    timeLimit: 10
   },
   {
     id: 3,
@@ -44,7 +41,6 @@ const PUZZLES: Puzzle[] = [
     options: ["Apple", "Orange", "Banana"],
     answer: "Banana",
     explanation: "3A = 2O implies 1O > 1A. Since B > O, then B > O > A. Banana is the heaviest.",
-    timeLimit: 12
   },
   {
     id: 4,
@@ -53,7 +49,6 @@ const PUZZLES: Puzzle[] = [
     options: ["3:45", "9:15", "8:15", "9:45"],
     answer: "8:15",
     explanation: "Real Time = 11:60 - Mirror Time. 11:60 - 3:45 = 8:15.",
-    timeLimit: 10
   },
   {
     id: 5,
@@ -62,7 +57,6 @@ const PUZZLES: Puzzle[] = [
     options: ["2", "4", "3", "6"],
     answer: "4",
     explanation: "A=2, B=4. 2+2=4 and 4+2=6.",
-    timeLimit: 8
   },
   {
     id: 6,
@@ -71,7 +65,6 @@ const PUZZLES: Puzzle[] = [
     options: ["He likes exercise", "He is short", "The lift is broken", "He visits a friend"],
     answer: "He is short",
     explanation: "He can only reach the 10th button with his umbrella. On sunny days he lacks it and only reaches the 7th.",
-    timeLimit: 15
   },
   {
     id: 7,
@@ -80,7 +73,6 @@ const PUZZLES: Puzzle[] = [
     options: ["0", "1", "2", "3"],
     answer: "1",
     explanation: "The 'P' is silent.",
-    timeLimit: 5
   },
   {
     id: 8,
@@ -89,7 +81,6 @@ const PUZZLES: Puzzle[] = [
     options: ["Circle", "Sphere", "Triangle", "Square"],
     answer: "Sphere",
     explanation: "A Sphere is 3D; the others are 2D shapes.",
-    timeLimit: 6
   },
   {
     id: 9,
@@ -98,7 +89,6 @@ const PUZZLES: Puzzle[] = [
     options: ["RED (in Blue)", "GREEN (in Green)", "YELLOW (in Red)", "BLUE (in Yellow)"],
     answer: "GREEN (in Green)",
     explanation: "This tests inhibition. Only Green matches both word and color.",
-    timeLimit: 5
   },
   {
     id: 10,
@@ -107,7 +97,6 @@ const PUZZLES: Puzzle[] = [
     options: ["USA", "Canada", "Neutral Ground", "You don't"],
     answer: "You don't",
     explanation: "You don't bury survivors!",
-    timeLimit: 5
   }
 ];
 
@@ -115,14 +104,12 @@ export default function LogicTraps({ onBack }: { onBack: () => void }) {
   const [gameState, setGameState] = useState<'idle' | 'playing' | 'ended'>('idle');
   const [currentIdx, setCurrentIdx] = useState(0);
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
   const [lastCorrect, setLastCorrect] = useState(false);
   const [startTime, setStartTime] = useState(0);
 
   const startPuzzle = useCallback((idx: number) => {
     setCurrentIdx(idx);
-    setTimeLeft(PUZZLES[idx].timeLimit);
     setShowExplanation(false);
   }, []);
 
@@ -134,16 +121,6 @@ export default function LogicTraps({ onBack }: { onBack: () => void }) {
     startPuzzle(0);
   };
 
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (gameState === 'playing' && timeLeft > 0 && !showExplanation) {
-      timer = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
-    } else if (timeLeft === 0 && gameState === 'playing' && !showExplanation) {
-      handleChoice("TIMEOUT");
-    }
-    return () => clearInterval(timer);
-  }, [gameState, timeLeft, showExplanation]);
-
   const handleChoice = (choice: string) => {
     const isCorrect = choice === PUZZLES[currentIdx].answer;
     setLastCorrect(isCorrect);
@@ -151,7 +128,8 @@ export default function LogicTraps({ onBack }: { onBack: () => void }) {
     
     if (isCorrect) {
       playSound('success');
-      setScore(prev => prev + (timeLeft * 10) + 100);
+      // Award a flat score for correct logic puzzles in unlimited mode
+      setScore(prev => prev + 500);
     } else {
       playSound('error');
     }
@@ -180,7 +158,7 @@ export default function LogicTraps({ onBack }: { onBack: () => void }) {
           </div>
           <CardTitle className="text-3xl font-black">Logic Traps</CardTitle>
           <CardDescription className="text-base font-medium px-4">
-            10 tricky puzzles designed to trap your mind. Speed and deep focus are required!
+            10 tricky puzzles designed to trap your mind. Take your time, focus is key!
           </CardDescription>
         </CardHeader>
         <CardContent className="pb-10 pt-4 px-8">
@@ -215,17 +193,9 @@ export default function LogicTraps({ onBack }: { onBack: () => void }) {
           <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest">Puzzle</span>
           <span className="text-3xl font-black text-indigo-600">{currentIdx + 1}/10</span>
         </div>
-        <div className="flex flex-col items-center flex-1 mx-4">
-          <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-2">Time Left</span>
-          <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-            <div 
-              className={`h-full transition-all duration-1000 ${timeLeft < 3 ? 'bg-red-500' : 'bg-indigo-500'}`} 
-              style={{ width: `${(timeLeft / current.timeLimit) * 100}%` }}
-            ></div>
-          </div>
-        </div>
         <div className="flex flex-col items-end">
-          <span className="text-3xl font-black text-slate-800">{timeLeft}s</span>
+          <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">Status</span>
+          <span className="text-lg font-black text-slate-800">UNLIMITED TIME</span>
         </div>
       </div>
 
