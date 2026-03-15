@@ -88,33 +88,18 @@ export default function Home() {
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div>
-              <p className="text-primary-foreground/80 mb-2 font-medium">Cognitive Score</p>
-              <h2 className="text-6xl font-black mb-4">{stats.brainScore.toLocaleString()}</h2>
-              <div className="flex gap-4">
-                <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-lg border border-white/20">
-                  <span className="block text-[10px] uppercase font-bold text-primary-foreground/70">Mental Level</span>
-                  <span className="font-bold text-lg">Elite</span>
-                </div>
-                <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-lg border border-white/20">
-                  <span className="block text-[10px] uppercase font-bold text-primary-foreground/70">Global Rank</span>
-                  <span className="font-bold text-lg">Top 5%</span>
-                </div>
+          <div className="max-w-xl">
+            <p className="text-primary-foreground/80 mb-2 font-medium">Cognitive Score</p>
+            <h2 className="text-6xl font-black mb-4">{stats.brainScore.toLocaleString()}</h2>
+            <div className="flex flex-wrap gap-4">
+              <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-lg border border-white/20">
+                <span className="block text-[10px] uppercase font-bold text-primary-foreground/70">Mental Level</span>
+                <span className="font-bold text-lg">Elite</span>
               </div>
-            </div>
-            <div className="hidden md:block bg-white/5 backdrop-blur-xl p-6 rounded-3xl border border-white/10 h-48">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={chartData}>
-                  <defs>
-                    <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#fff" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#fff" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <Area type="monotone" dataKey="score" stroke="#fff" fillOpacity={1} fill="url(#colorScore)" />
-                </AreaChart>
-              </ResponsiveContainer>
+              <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-lg border border-white/20">
+                <span className="block text-[10px] uppercase font-bold text-primary-foreground/70">Global Rank</span>
+                <span className="font-bold text-lg">Top 5%</span>
+              </div>
             </div>
           </div>
         </div>
