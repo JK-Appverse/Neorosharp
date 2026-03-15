@@ -22,6 +22,7 @@ export interface UserStats {
     emojiHunt: number;
     wordScramble: number;
     logicTraps: number;
+    imagePuzzle: number;
     colorChaos: number;
     missingLink: number;
     rotationStation: number;
@@ -61,6 +62,7 @@ const DEFAULT_STATS: UserStats = {
     emojiHunt: 0,
     wordScramble: 0,
     logicTraps: 0,
+    imagePuzzle: 0,
     colorChaos: 0,
     missingLink: 0,
     rotationStation: 0,
@@ -132,7 +134,8 @@ export function updateHighScores(game: keyof UserStats['highScores'], score: num
   let isNewHigh = false;
   const finalScore = isDailyChallenge ? score * 2 : score;
 
-  if (game === 'schulte' || game === 'reactionTime') {
+  if (game === 'schulte' || game === 'reactionTime' || game === 'imagePuzzle') {
+    // For these games, lower is better (time/moves)
     if (score > 0 && (currentHigh === 0 || score < currentHigh)) {
       stats.highScores[game] = score;
       isNewHigh = true;
