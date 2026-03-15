@@ -50,6 +50,23 @@ export default function Home() {
 
   if (!stats) return null;
 
+  const getRankDetails = (score: number) => {
+    if (score < 1000) return { name: 'Bronze', color: 'bg-orange-700/40', border: 'border-orange-500/40', text: 'text-orange-200' };
+    if (score < 3000) return { name: 'Silver', color: 'bg-slate-500/40', border: 'border-slate-300/40', text: 'text-slate-100' };
+    if (score < 7000) return { name: 'Gold', color: 'bg-yellow-600/40', border: 'border-yellow-400/40', text: 'text-yellow-100' };
+    if (score < 15000) return { name: 'Platinum', color: 'bg-cyan-600/40', border: 'border-cyan-300/40', text: 'text-cyan-100' };
+    return { name: 'Diamond', color: 'bg-indigo-600/40', border: 'border-indigo-400/40', text: 'text-indigo-100' };
+  };
+
+  const getGlobalRank = (score: number) => {
+    if (score < 500) return "Top 90%";
+    if (score < 1500) return "Top 75%";
+    if (score < 5000) return "Top 50%";
+    if (score < 10000) return "Top 25%";
+    if (score < 20000) return "Top 10%";
+    return "Top 1%";
+  };
+
   if (activeView === 'profile') {
     return <ProfileView stats={stats} onBack={() => setActiveView('none')} />;
   }
@@ -73,12 +90,14 @@ export default function Home() {
   }
 
   const chartData = stats.history.slice(-7);
+  const rank = getRankDetails(stats.brainScore);
+  const globalRank = getGlobalRank(stats.brainScore);
 
   return (
     <div className="min-h-screen pb-12 bg-slate-50/50">
       <header className="bg-primary pt-12 pb-24 px-4 text-white">
         <div className="container mx-auto max-w-6xl">
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-12">
             <div className="flex items-center gap-2">
               <div className="bg-white p-2 rounded-xl">
                 <Brain className="text-primary w-8 h-8" />
@@ -104,17 +123,17 @@ export default function Home() {
             </div>
           </div>
           
-          <div className="max-w-xl">
+          <div className="flex flex-col items-center text-center">
             <p className="text-primary-foreground/80 mb-2 font-medium">Welcome back, {stats.name}</p>
-            <h2 className="text-6xl font-black mb-4">{stats.brainScore.toLocaleString()}</h2>
-            <div className="flex flex-wrap gap-4">
-              <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-lg border border-white/20">
-                <span className="block text-[10px] uppercase font-bold text-primary-foreground/70">Mental Level</span>
-                <span className="font-bold text-lg">Elite</span>
+            <h2 className="text-7xl font-black mb-6 tracking-tighter">{stats.brainScore.toLocaleString()}</h2>
+            <div className="flex flex-wrap justify-center gap-4">
+              <div className={`backdrop-blur-md px-6 py-2 rounded-xl border transition-colors duration-500 ${rank.color} ${rank.border}`}>
+                <span className="block text-[10px] uppercase font-bold text-primary-foreground/70 mb-0.5">Mental Level</span>
+                <span className={`font-black text-xl ${rank.text}`}>{rank.name}</span>
               </div>
-              <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-lg border border-white/20">
-                <span className="block text-[10px] uppercase font-bold text-primary-foreground/70">Global Rank</span>
-                <span className="font-bold text-lg">Top 5%</span>
+              <div className="bg-white/10 backdrop-blur-md px-6 py-2 rounded-xl border border-white/20">
+                <span className="block text-[10px] uppercase font-bold text-primary-foreground/70 mb-0.5">Global Rank</span>
+                <span className="font-black text-xl text-white">{globalRank}</span>
               </div>
             </div>
           </div>
