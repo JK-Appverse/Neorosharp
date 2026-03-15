@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { getStats, UserStats, updateUserName, calculateBrainAge, updateDailyGoal } from '@/lib/storage';
 import { 
-  Brain, Zap, Eye, Grid, TrendingUp, Flame, Award, ChevronRight, Target, Hash, 
+  Brain, Zap, Eye, Grid, TrendingUp, Award, ChevronRight, Target, Hash, 
   RefreshCw, Search, Timer, ArrowRightLeft, User, ArrowLeft, CheckCircle2, 
-  Save, Triangle, MousePointer2, Settings, BarChart3, Clock
+  Save, Triangle, MousePointer2, Settings, BarChart3, Clock, Type, Swords, Sparkles
 } from "lucide-react";
 
 import StroopTest from '@/components/games/StroopTest';
@@ -23,10 +23,14 @@ import ReactionTime from '@/components/games/ReactionTime';
 import DirectionalSwipe from '@/components/games/DirectionalSwipe';
 import NumberPyramid from '@/components/games/NumberPyramid';
 import VowelHunter from '@/components/games/VowelHunter';
+import SpeedMatch from '@/components/games/SpeedMatch';
+import EmojiHunt from '@/components/games/EmojiHunt';
+import WordScramble from '@/components/games/WordScramble';
+import VersusMode from '@/components/games/VersusMode';
 
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-type ActiveView = 'none' | 'stroop' | 'math' | 'pattern' | 'schulte' | 'digitSpan' | 'reverseWord' | 'oddOneOut' | 'reactionTime' | 'directionalSwipe' | 'numberPyramid' | 'vowelHunter' | 'profile';
+type ActiveView = 'none' | 'stroop' | 'math' | 'pattern' | 'schulte' | 'digitSpan' | 'reverseWord' | 'oddOneOut' | 'reactionTime' | 'directionalSwipe' | 'numberPyramid' | 'vowelHunter' | 'speedMatch' | 'emojiHunt' | 'wordScramble' | 'profile' | 'versus';
 
 export default function Home() {
   const [activeView, setActiveView] = useState<ActiveView>('none');
@@ -35,6 +39,18 @@ export default function Home() {
   useEffect(() => {
     setStats(getStats());
   }, [activeView]);
+
+  const dailyChallengeGames = useMemo(() => {
+    // Deterministic daily challenge based on date
+    const today = new Date().toISOString().split('T')[0];
+    const hash = today.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const games: ActiveView[] = ['stroop', 'math', 'pattern', 'schulte', 'digitSpan', 'reverseWord', 'oddOneOut', 'reactionTime', 'directionalSwipe', 'numberPyramid', 'vowelHunter', 'speedMatch', 'emojiHunt', 'wordScramble'];
+    return [
+      games[hash % games.length],
+      games[(hash + 3) % games.length],
+      games[(hash + 7) % games.length]
+    ];
+  }, []);
 
   if (!stats) return null;
 
@@ -46,9 +62,9 @@ export default function Home() {
 
   const getRankDetails = (score: number) => {
     if (score < 1000) return { name: 'Bronze', color: 'bg-orange-700/40', border: 'border-orange-500/40', text: 'text-orange-200' };
-    if (score < 3000) return { name: 'Silver', color: 'bg-slate-500/40', border: 'border-slate-300/40', text: 'text-slate-100' };
-    if (score < 7000) return { name: 'Gold', color: 'bg-yellow-600/40', border: 'border-yellow-400/40', text: 'text-yellow-100' };
-    if (score < 15000) return { name: 'Platinum', color: 'bg-cyan-600/40', border: 'border-cyan-300/40', text: 'text-cyan-100' };
+    if (score < 5000) return { name: 'Silver', color: 'bg-slate-500/40', border: 'border-slate-300/40', text: 'text-slate-100' };
+    if (score < 15000) return { name: 'Gold', color: 'bg-yellow-600/40', border: 'border-yellow-400/40', text: 'text-yellow-100' };
+    if (score < 40000) return { name: 'Platinum', color: 'bg-cyan-600/40', border: 'border-cyan-300/40', text: 'text-cyan-100' };
     return { name: 'Diamond', color: 'bg-indigo-600/40', border: 'border-indigo-400/40', text: 'text-indigo-100' };
   };
 
@@ -58,7 +74,12 @@ export default function Home() {
     return <ProfileView stats={stats} onBack={() => setActiveView('none')} brainAge={brainAge} />;
   }
 
+  if (activeView === 'versus') {
+    return <VersusMode onBack={() => setActiveView('none')} />;
+  }
+
   if (activeView !== 'none') {
+    const isDaily = dailyChallengeGames.includes(activeView);
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 md:p-8">
         <div className="w-full max-w-2xl">
@@ -73,6 +94,9 @@ export default function Home() {
           {activeView === 'directionalSwipe' && <DirectionalSwipe onBack={() => setActiveView('none')} />}
           {activeView === 'numberPyramid' && <NumberPyramid onBack={() => setActiveView('none')} />}
           {activeView === 'vowelHunter' && <VowelHunter onBack={() => setActiveView('none')} />}
+          {activeView === 'speedMatch' && <SpeedMatch onBack={() => setActiveView('none')} isDaily={isDaily} />}
+          {activeView === 'emojiHunt' && <EmojiHunt onBack={() => setActiveView('none')} isDaily={isDaily} />}
+          {activeView === 'wordScramble' && <WordScramble onBack={() => setActiveView('none')} isDaily={isDaily} />}
         </div>
       </div>
     );
@@ -91,18 +115,28 @@ export default function Home() {
               </div>
               <h1 className="text-3xl font-extrabold tracking-tighter">NeuroSharp</h1>
             </div>
-            <Button 
-              variant="outline" 
-              size="icon" 
-              className="rounded-full bg-white/10 border-white/20 text-white hover:bg-white hover:text-primary transition-all"
-              onClick={() => setActiveView('profile')}
-            >
-              <User className="w-5 h-5" />
-            </Button>
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="rounded-full bg-white/10 border-white/20 text-white hover:bg-white hover:text-primary transition-all"
+                onClick={() => setActiveView('versus')}
+              >
+                <Swords className="w-5 h-5" />
+              </Button>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="rounded-full bg-white/10 border-white/20 text-white hover:bg-white hover:text-primary transition-all"
+                onClick={() => setActiveView('profile')}
+              >
+                <User className="w-5 h-5" />
+              </Button>
+            </div>
           </div>
           
           <div className="flex flex-col items-center text-center">
-            <p className="text-primary-foreground/80 mb-2 font-medium">Hello, {stats.name}</p>
+            <p className="text-primary-foreground/80 mb-2 font-medium">Sharp Mind, {stats.name}</p>
             <h2 className="text-7xl font-black mb-6 tracking-tighter">{stats.brainScore.toLocaleString()}</h2>
             <div className="flex flex-wrap justify-center gap-4">
               <div className={`backdrop-blur-md px-6 py-2 rounded-xl border transition-colors duration-500 ${rank.color} ${rank.border}`}>
@@ -133,22 +167,21 @@ export default function Home() {
           
           <Card className="rounded-[2.5rem] border-none shadow-xl bg-white overflow-hidden p-6 col-span-1 md:col-span-2">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-black text-slate-800 flex items-center gap-2"><BarChart3 className="w-5 h-5 text-accent" /> Activity Heatmap</h3>
-              <span className="text-xs font-black text-muted-foreground">Last 7 Days</span>
+              <h3 className="font-black text-slate-800 flex items-center gap-2"><Sparkles className="w-5 h-5 text-amber-500" /> Daily Challenges</h3>
+              <span className="text-xs font-black text-amber-600">2X Points</span>
             </div>
-            <div className="flex gap-2 justify-between">
-              {Array.from({ length: 7 }).map((_, i) => {
-                const date = new Date();
-                date.setDate(date.getDate() - (6 - i));
-                const dateStr = date.toISOString().split('T')[0];
-                const active = stats.playTimeSeconds?.[dateStr] > 0;
-                return (
-                  <div key={i} className="flex flex-col items-center gap-2 flex-1">
-                    <div className={`w-full aspect-square rounded-lg ${active ? 'bg-primary' : 'bg-slate-100'}`}></div>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase">{date.toLocaleDateString('en-US', { weekday: 'short' }).charAt(0)}</span>
-                  </div>
-                );
-              })}
+            <div className="flex gap-4">
+              {dailyChallengeGames.map((game, i) => (
+                <Button 
+                  key={i} 
+                  variant="outline" 
+                  onClick={() => setActiveView(game)}
+                  className="flex-1 rounded-2xl border-amber-100 hover:border-amber-300 hover:bg-amber-50 h-16 flex flex-col items-center justify-center"
+                >
+                  <span className="text-[10px] font-black uppercase text-amber-600">{game}</span>
+                  <span className="text-xs font-bold text-slate-400">Bonus</span>
+                </Button>
+              ))}
             </div>
           </Card>
         </div>
@@ -158,9 +191,33 @@ export default function Home() {
             <h3 className="text-2xl font-black flex items-center gap-2 text-slate-800">
               <Target className="w-7 h-7 text-primary" /> Training Modules
             </h3>
-            <span className="text-xs text-muted-foreground font-black uppercase tracking-widest mt-1">11 Exercises Available</span>
+            <span className="text-xs text-muted-foreground font-black uppercase tracking-widest mt-1">Advanced Exercises Available</span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <GameCard 
+              title="Speed Match" 
+              desc="Working Memory" 
+              icon={<Sparkles className="w-6 h-6" />}
+              highScore={stats.highScores.speedMatch}
+              color="bg-blue-600"
+              onClick={() => setActiveView('speedMatch')}
+            />
+            <GameCard 
+              title="Emoji Hunt" 
+              desc="Visual Search" 
+              icon={<Search className="w-6 h-6" />}
+              highScore={stats.highScores.emojiHunt}
+              color="bg-amber-600"
+              onClick={() => setActiveView('emojiHunt')}
+            />
+            <GameCard 
+              title="Word Scramble" 
+              desc="Language Processing" 
+              icon={<Type className="w-6 h-6" />}
+              highScore={stats.highScores.wordScramble}
+              color="bg-pink-600"
+              onClick={() => setActiveView('wordScramble')}
+            />
             <GameCard 
               title="Number Pyramid" 
               desc="Mental Addition" 
@@ -233,23 +290,6 @@ export default function Home() {
               highScore={stats.highScores.math}
               color="bg-yellow-500"
               onClick={() => setActiveView('math')}
-            />
-            <GameCard 
-              title="Pattern Recall" 
-              desc="Visual Memory" 
-              icon={<Eye className="w-6 h-6" />}
-              highScore={stats.highScores.pattern}
-              color="bg-blue-500"
-              onClick={() => setActiveView('pattern')}
-            />
-            <GameCard 
-              title="Schulte Table" 
-              desc="Peripheral Vision" 
-              icon={<Grid className="w-6 h-6" />}
-              highScore={stats.highScores.schulte}
-              unit="s"
-              color="bg-indigo-500"
-              onClick={() => setActiveView('schulte')}
             />
           </div>
         </section>
@@ -416,7 +456,6 @@ function ProfileView({ stats, onBack, brainAge }: { stats: UserStats, onBack: ()
             <AchievementItem title="Focused" desc="Math Rush > 100" unlocked={stats.highScores.math >= 100} />
             <AchievementItem title="Eagle Eye" desc="Odd One Out > 200" unlocked={stats.highScores.oddOneOut >= 200} />
             <AchievementItem title="Pyramid King" desc="Number Pyramid > 300" unlocked={stats.highScores.numberPyramid >= 300} />
-            <AchievementItem title="Vowel Master" desc="Vowel Hunter > 400" unlocked={stats.highScores.vowelHunter >= 400} />
           </CardContent>
         </Card>
       </div>

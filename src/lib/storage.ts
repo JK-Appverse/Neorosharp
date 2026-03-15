@@ -18,8 +18,17 @@ export interface UserStats {
     directionalSwipe: number;
     numberPyramid: number;
     vowelHunter: number;
-    gridRotation: number;
-    colorSequence: number;
+    // New Advanced Exercises
+    speedMatch: number;
+    emojiHunt: number;
+    wordScramble: number;
+    colorChaos: number;
+    missingLink: number;
+    rotationStation: number;
+    soundMemory: number;
+    chalkboardMath: number;
+    focusGrid: number;
+    reverseCount: number;
   };
   history: {
     date: string;
@@ -48,8 +57,16 @@ const DEFAULT_STATS: UserStats = {
     directionalSwipe: 0,
     numberPyramid: 0,
     vowelHunter: 0,
-    gridRotation: 0,
-    colorSequence: 0,
+    speedMatch: 0,
+    emojiHunt: 0,
+    wordScramble: 0,
+    colorChaos: 0,
+    missingLink: 0,
+    rotationStation: 0,
+    soundMemory: 0,
+    chalkboardMath: 0,
+    focusGrid: 0,
+    reverseCount: 0,
   },
   history: [],
 };
@@ -60,10 +77,11 @@ export function getStats(): UserStats {
   if (!saved) return DEFAULT_STATS;
   try {
     const parsed = JSON.parse(saved);
+    const mergedScores = { ...DEFAULT_STATS.highScores, ...parsed.highScores };
     return { 
       ...DEFAULT_STATS, 
       ...parsed, 
-      highScores: { ...DEFAULT_STATS.highScores, ...parsed.highScores },
+      highScores: mergedScores,
       playTimeSeconds: parsed.playTimeSeconds || {}
     };
   } catch {
@@ -102,16 +120,17 @@ export function calculateBrainAge(stats: UserStats): number {
   
   if (gameCount === 0) return baseAge;
   
-  // Reduction based on mastery (1 year younger for every 2000 points)
-  const reduction = Math.min(15, totalScore / 2000);
+  const reduction = Math.min(17, (totalScore / 1500) + (gameCount * 0.5));
   return Math.max(18, Math.round(baseAge - reduction));
 }
 
-export function updateHighScores(game: keyof UserStats['highScores'], score: number) {
+export function updateHighScores(game: keyof UserStats['highScores'], score: number, isDailyChallenge: boolean = false) {
   const stats = getStats();
   const currentHigh = stats.highScores[game];
   
   let isNewHigh = false;
+  const finalScore = isDailyChallenge ? score * 2 : score;
+
   if (game === 'schulte' || game === 'reactionTime') {
     if (score > 0 && (currentHigh === 0 || score < currentHigh)) {
       stats.highScores[game] = score;
@@ -124,17 +143,13 @@ export function updateHighScores(game: keyof UserStats['highScores'], score: num
     }
   }
 
-  if (isNewHigh) {
-    stats.brainScore += 50; 
-  }
-
   const today = new Date().toISOString().split('T')[0];
   const lastHistory = stats.history[stats.history.length - 1];
   
   if (lastHistory && lastHistory.date === today) {
-    lastHistory.score += score;
+    lastHistory.score += finalScore;
   } else {
-    stats.history.push({ date: today, score });
+    stats.history.push({ date: today, score: finalScore });
   }
 
   if (stats.lastPlayed !== today) {
@@ -144,12 +159,12 @@ export function updateHighScores(game: keyof UserStats['highScores'], score: num
     
     if (stats.lastPlayed === yesterdayStr) {
       stats.streak += 1;
-    } else if (stats.lastPlayed !== today) {
+    } else {
       stats.streak = 1;
     }
     stats.lastPlayed = today;
   }
 
-  stats.brainScore += Math.floor(score / 10) > 0 ? Math.floor(score / 10) : 5;
+  stats.brainScore += finalScore;
   saveStats(stats);
 }
