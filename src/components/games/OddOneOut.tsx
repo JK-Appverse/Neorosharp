@@ -125,7 +125,7 @@ export default function OddOneOut({ onBack }: { onBack: () => void }) {
           <button
             key={i}
             onClick={() => handleTileClick(i)}
-            className="aspect-square flex items-center justify-center text-4xl font-black rounded-2xl bg-slate-50 hover:bg-emerald-50 hover:text-emerald-600 transition-all active:scale-90 border border-transparent hover:border-emerald-200"
+            className="aspect-square flex items-center justify-center text-4xl font-black rounded-2xl bg-slate-50 hover:bg-emerald-50 hover:text-slate-950 transition-all active:scale-90 border border-transparent hover:border-emerald-200"
           >
             {char}
           </button>
