@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { updateHighScores } from '@/lib/storage';
 import { ArrowLeft, ArrowUp, ArrowDown, ArrowLeft as ArrowLeftIcon, ArrowRight, Brain } from "lucide-react";
+import { playSound } from '@/lib/audio';
 
 type Direction = 'up' | 'down' | 'left' | 'right';
 type Color = 'blue' | 'red';
@@ -26,6 +27,7 @@ export default function DirectionalSwipe({ onBack }: { onBack: () => void }) {
   }, []);
 
   const startGame = () => {
+    playSound('click');
     setScore(0);
     setTimeLeft(30);
     setGameState('playing');
@@ -37,6 +39,7 @@ export default function DirectionalSwipe({ onBack }: { onBack: () => void }) {
       const interval = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
       return () => clearInterval(interval);
     } else if (gameState === 'playing' && timeLeft <= 0) {
+      playSound('error');
       setGameState('ended');
       updateHighScores('directionalSwipe', score);
     }
@@ -49,7 +52,6 @@ export default function DirectionalSwipe({ onBack }: { onBack: () => void }) {
     if (color === 'blue') {
       isCorrect = move === dir;
     } else {
-      // Opposite
       if (dir === 'up') isCorrect = move === 'down';
       if (dir === 'down') isCorrect = move === 'up';
       if (dir === 'left') isCorrect = move === 'right';
@@ -57,9 +59,11 @@ export default function DirectionalSwipe({ onBack }: { onBack: () => void }) {
     }
 
     if (isCorrect) {
+      playSound('success');
       setScore(prev => prev + 10);
       startRound();
     } else {
+      playSound('error');
       setScore(prev => Math.max(0, prev - 5));
       startRound();
     }
@@ -120,7 +124,7 @@ export default function DirectionalSwipe({ onBack }: { onBack: () => void }) {
       </div>
 
       <Card className="border-none shadow-2xl bg-white rounded-[2.5rem] p-10 flex flex-col items-center justify-center min-h-[300px]">
-        <div className={`p-10 rounded-[2rem] bg-slate-50 transition-colors duration-300 ${challenge.color === 'blue' ? 'text-blue-500 bg-blue-50' : 'text-red-500 bg-red-50'}`}>
+        <div className={`p-10 rounded-[2rem] transition-colors duration-300 ${challenge.color === 'blue' ? 'text-blue-500 bg-blue-50' : 'text-red-500 bg-red-50'}`}>
           {challenge.dir === 'up' && <ArrowUp className="w-24 h-24 stroke-[4]" />}
           {challenge.dir === 'down' && <ArrowDown className="w-24 h-24 stroke-[4]" />}
           {challenge.dir === 'left' && <ArrowLeftIcon className="w-24 h-24 stroke-[4]" />}
@@ -132,10 +136,10 @@ export default function DirectionalSwipe({ onBack }: { onBack: () => void }) {
       </Card>
 
       <div className="grid grid-cols-2 gap-4">
-        <Button variant="outline" className="h-20 rounded-2xl border-2 hover:bg-slate-200 hover:text-slate-950 transition-colors" onClick={() => handleMove('up')}><ArrowUp className="w-8 h-8" /></Button>
-        <Button variant="outline" className="h-20 rounded-2xl border-2 hover:bg-slate-200 hover:text-slate-950 transition-colors" onClick={() => handleMove('down')}><ArrowDown className="w-8 h-8" /></Button>
-        <Button variant="outline" className="h-20 rounded-2xl border-2 hover:bg-slate-200 hover:text-slate-950 transition-colors" onClick={() => handleMove('left')}><ArrowLeftIcon className="w-8 h-8" /></Button>
-        <Button variant="outline" className="h-20 rounded-2xl border-2 hover:bg-slate-200 hover:text-slate-950 transition-colors" onClick={() => handleMove('right')}><ArrowRight className="w-8 h-8" /></Button>
+        <Button variant="outline" className="h-20 rounded-2xl border-2 hover:bg-slate-900 hover:text-white transition-colors group" onClick={() => handleMove('up')}><ArrowUp className="w-8 h-8 group-hover:text-white" /></Button>
+        <Button variant="outline" className="h-20 rounded-2xl border-2 hover:bg-slate-900 hover:text-white transition-colors group" onClick={() => handleMove('down')}><ArrowDown className="w-8 h-8 group-hover:text-white" /></Button>
+        <Button variant="outline" className="h-20 rounded-2xl border-2 hover:bg-slate-900 hover:text-white transition-colors group" onClick={() => handleMove('left')}><ArrowLeftIcon className="w-8 h-8 group-hover:text-white" /></Button>
+        <Button variant="outline" className="h-20 rounded-2xl border-2 hover:bg-slate-900 hover:text-white transition-colors group" onClick={() => handleMove('right')}><ArrowRight className="w-8 h-8 group-hover:text-white" /></Button>
       </div>
     </div>
   );

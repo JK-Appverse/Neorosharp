@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { updateHighScores } from '@/lib/storage';
 import { Eye, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { playSound } from '@/lib/audio';
 
 export default function PatternRecall({ onBack }: { onBack: () => void }) {
   const [gameState, setGameState] = useState<'idle' | 'showing' | 'playing' | 'ended'>('idle');
@@ -28,10 +29,11 @@ export default function PatternRecall({ onBack }: { onBack: () => void }) {
     
     setTimeout(() => {
       setGameState('playing');
-    }, 1500 + (l * 100)); // slightly more time for higher levels
+    }, 1500 + (l * 100));
   }, []);
 
   const startGame = () => {
+    playSound('click');
     setScore(0);
     setLevel(1);
     startLevel(1);
@@ -42,15 +44,18 @@ export default function PatternRecall({ onBack }: { onBack: () => void }) {
     if (userPattern.includes(idx)) return;
 
     if (pattern.includes(idx)) {
+      playSound('click');
       const newUserPattern = [...userPattern, idx];
       setUserPattern(newUserPattern);
       
       if (newUserPattern.length === pattern.length) {
+        playSound('success');
         setScore(prev => prev + level * 10);
         setLevel(prev => prev + 1);
         setTimeout(() => startLevel(level + 1), 500);
       }
     } else {
+      playSound('error');
       setGameState('ended');
       updateHighScores('pattern', score);
     }

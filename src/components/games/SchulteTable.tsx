@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { updateHighScores } from '@/lib/storage';
 import { Grid, ArrowLeft, Trophy } from "lucide-react";
+import { playSound } from '@/lib/audio';
 
 export default function SchulteTable({ onBack }: { onBack: () => void }) {
   const [gameState, setGameState] = useState<'idle' | 'playing' | 'ended'>('idle');
@@ -23,6 +24,7 @@ export default function SchulteTable({ onBack }: { onBack: () => void }) {
   }, []);
 
   const startGame = () => {
+    playSound('click');
     shuffleNumbers();
     setNextExpected(1);
     setTimer(0);
@@ -39,12 +41,16 @@ export default function SchulteTable({ onBack }: { onBack: () => void }) {
   const handleNumClick = (n: number) => {
     if (gameState !== 'playing') return;
     if (n === nextExpected) {
+      playSound('click');
       if (n === 25) {
+        playSound('success');
         setGameState('ended');
         updateHighScores('schulte', Math.round(timer * 10) / 10);
       } else {
         setNextExpected(prev => prev + 1);
       }
+    } else {
+      playSound('error');
     }
   };
 
@@ -107,7 +113,7 @@ export default function SchulteTable({ onBack }: { onBack: () => void }) {
             className={`aspect-square rounded-lg flex items-center justify-center text-xl font-bold transition-all ${
               n < nextExpected 
               ? "bg-accent/20 text-accent/40 border-accent/10 cursor-default" 
-              : "bg-muted/20 hover:bg-muted text-foreground hover:text-slate-900 border border-muted hover:border-primary active:scale-90"
+              : "bg-muted/20 hover:bg-slate-900 text-foreground hover:text-white border border-muted hover:border-primary active:scale-90"
             }`}
           >
             {n}

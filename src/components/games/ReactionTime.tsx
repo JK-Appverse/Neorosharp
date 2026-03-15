@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { updateHighScores } from '@/lib/storage';
 import { Timer, ArrowLeft, Zap, Target } from "lucide-react";
+import { playSound } from '@/lib/audio';
 
 export default function ReactionTime({ onBack }: { onBack: () => void }) {
   const [gameState, setGameState] = useState<'idle' | 'waiting' | 'ready' | 'result' | 'early'>('idle');
@@ -14,9 +15,10 @@ export default function ReactionTime({ onBack }: { onBack: () => void }) {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const startWaiting = () => {
+    playSound('click');
     setGameState('waiting');
     setReactionTime(null);
-    const delay = Math.floor(Math.random() * 3000) + 2000; // 2-5 seconds
+    const delay = Math.floor(Math.random() * 3000) + 2000;
     timeoutRef.current = setTimeout(() => {
       setGameState('ready');
       startTimeRef.current = performance.now();
@@ -25,9 +27,11 @@ export default function ReactionTime({ onBack }: { onBack: () => void }) {
 
   const handleTap = () => {
     if (gameState === 'waiting') {
+      playSound('error');
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       setGameState('early');
     } else if (gameState === 'ready') {
+      playSound('success');
       const endTime = performance.now();
       const diff = Math.round(endTime - startTimeRef.current);
       setReactionTime(diff);

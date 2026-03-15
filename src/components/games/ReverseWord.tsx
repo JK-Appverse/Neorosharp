@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { updateHighScores } from '@/lib/storage';
 import { RefreshCw, ArrowLeft, Brain } from "lucide-react";
+import { playSound } from '@/lib/audio';
 
 const WORDS = [
   'APPLE', 'BRAIN', 'FOCUS', 'SMART', 'LIGHT', 'DREAM', 'THINK', 'SHARP',
@@ -30,6 +31,7 @@ export default function ReverseWord({ onBack }: { onBack: () => void }) {
   }, []);
 
   const startGame = () => {
+    playSound('click');
     setScore(0);
     startRound();
   };
@@ -47,10 +49,12 @@ export default function ReverseWord({ onBack }: { onBack: () => void }) {
     if (e) e.preventDefault();
     const reversed = word.split('').reverse().join('');
     if (userInput.toUpperCase() === reversed) {
+      playSound('success');
       setScore(prev => prev + word.length * 10);
       updateHighScores('reverseWord', score + word.length * 10);
       startRound();
     } else {
+      playSound('error');
       setGameState('ended');
     }
   };

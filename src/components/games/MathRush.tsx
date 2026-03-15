@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { updateHighScores } from '@/lib/storage';
 import { Timer, Zap, ArrowLeft } from "lucide-react";
+import { playSound } from '@/lib/audio';
 
 export default function MathRush({ onBack }: { onBack: () => void }) {
   const [gameState, setGameState] = useState<'idle' | 'playing' | 'ended'>('idle');
@@ -35,6 +36,7 @@ export default function MathRush({ onBack }: { onBack: () => void }) {
   }, []);
 
   const startGame = () => {
+    playSound('click');
     setGameState('playing');
     setScore(0);
     setTotalTime(30);
@@ -45,6 +47,7 @@ export default function MathRush({ onBack }: { onBack: () => void }) {
   useEffect(() => {
     if (gameState === 'playing') {
       if (totalTime <= 0 || timeLeft <= 0) {
+        playSound('error');
         setGameState('ended');
         updateHighScores('math', score);
         return;
@@ -59,6 +62,7 @@ export default function MathRush({ onBack }: { onBack: () => void }) {
 
   const checkAnswer = (val: string) => {
     if (parseInt(val) === problem.a) {
+      playSound('success');
       setScore(prev => prev + 10);
       setUserInput('');
       generateProblem();

@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { updateHighScores } from '@/lib/storage';
 import { Search, ArrowLeft, Zap } from "lucide-react";
+import { playSound } from '@/lib/audio';
 
 const SETS = [
   { char: 'M', odd: 'N' },
@@ -39,6 +40,7 @@ export default function OddOneOut({ onBack }: { onBack: () => void }) {
   }, []);
 
   const startGame = () => {
+    playSound('click');
     setScore(0);
     setGameState('playing');
     startRound();
@@ -49,6 +51,7 @@ export default function OddOneOut({ onBack }: { onBack: () => void }) {
       const interval = setInterval(() => setTimeLeft(prev => Math.round((prev - 0.1) * 10) / 10), 100);
       return () => clearInterval(interval);
     } else if (gameState === 'playing' && timeLeft <= 0) {
+      playSound('error');
       setGameState('ended');
       updateHighScores('oddOneOut', score);
     }
@@ -56,9 +59,11 @@ export default function OddOneOut({ onBack }: { onBack: () => void }) {
 
   const handleTileClick = (idx: number) => {
     if (idx === oddIndex) {
+      playSound('success');
       setScore(prev => prev + 10);
       startRound();
     } else {
+      playSound('error');
       setTimeLeft(prev => Math.max(0, prev - 1));
     }
   };
@@ -125,7 +130,7 @@ export default function OddOneOut({ onBack }: { onBack: () => void }) {
           <button
             key={i}
             onClick={() => handleTileClick(i)}
-            className="aspect-square flex items-center justify-center text-4xl font-black rounded-2xl bg-slate-50 hover:bg-emerald-50 hover:text-slate-950 transition-all active:scale-90 border border-transparent hover:border-emerald-200"
+            className="aspect-square flex items-center justify-center text-4xl font-black rounded-2xl bg-slate-50 hover:bg-slate-900 hover:text-white transition-all active:scale-90 border border-transparent"
           >
             {char}
           </button>

@@ -7,12 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { updateHighScores } from '@/lib/storage';
 import { Hash, ArrowLeft, Trophy } from "lucide-react";
+import { playSound } from '@/lib/audio';
 
 export default function DigitSpan({ onBack }: { onBack: () => void }) {
   const [gameState, setGameState] = useState<'idle' | 'showing' | 'playing' | 'ended'>('idle');
   const [sequence, setSequence] = useState<number[]>([]);
   const [userInput, setUserInput] = useState('');
-  const [level, setLevel] = useState(3); // Start with 3 digits
+  const [level, setLevel] = useState(3);
   const [timer, setTimer] = useState(0);
 
   const startLevel = useCallback((l: number) => {
@@ -20,10 +21,11 @@ export default function DigitSpan({ onBack }: { onBack: () => void }) {
     setSequence(newSeq);
     setUserInput('');
     setGameState('showing');
-    setTimer(l + 1); // seconds to memorize
+    setTimer(l + 1);
   }, []);
 
   const startGame = () => {
+    playSound('click');
     setLevel(3);
     startLevel(3);
   };
@@ -41,11 +43,13 @@ export default function DigitSpan({ onBack }: { onBack: () => void }) {
     if (e) e.preventDefault();
     const isCorrect = userInput === sequence.join('');
     if (isCorrect) {
+      playSound('success');
       const nextLevel = level + 1;
       setLevel(nextLevel);
       updateHighScores('digitSpan', level);
       startLevel(nextLevel);
     } else {
+      playSound('error');
       setGameState('ended');
     }
   };

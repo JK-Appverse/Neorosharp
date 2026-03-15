@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { updateHighScores } from '@/lib/storage';
 import { Progress } from "@/components/ui/progress";
 import { Brain, ArrowLeft } from "lucide-react";
+import { playSound } from '@/lib/audio';
 
 const COLORS = [
   { name: 'RED', value: '#ef4444', class: 'text-red-500' },
@@ -31,6 +32,7 @@ export default function StroopTest({ onBack }: { onBack: () => void }) {
   }, []);
 
   const startGame = () => {
+    playSound('click');
     setGameState('playing');
     setScore(0);
     setTimeLeft(30);
@@ -49,9 +51,11 @@ export default function StroopTest({ onBack }: { onBack: () => void }) {
 
   const handleChoice = (colorValue: string) => {
     if (colorValue === currentColor.value) {
+      playSound('success');
       setScore(prev => prev + 10);
       nextChallenge();
     } else {
+      playSound('error');
       setScore(prev => Math.max(0, prev - 5));
       nextChallenge();
     }
@@ -125,7 +129,7 @@ export default function StroopTest({ onBack }: { onBack: () => void }) {
           <Button
             key={c.name}
             variant="outline"
-            className="h-20 text-xl font-bold border-2 hover:bg-muted transition-colors hover:text-slate-900"
+            className="h-20 text-xl font-bold border-2 hover:bg-slate-900 hover:text-white transition-colors"
             onClick={() => handleChoice(c.value)}
           >
             {c.name}
