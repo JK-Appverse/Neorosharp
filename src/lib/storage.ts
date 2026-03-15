@@ -4,6 +4,8 @@ export interface UserStats {
   brainScore: number;
   streak: number;
   lastPlayed: string | null;
+  dailyGoalMinutes: number;
+  playTimeSeconds: Record<string, number>; // date string -> seconds
   highScores: {
     stroop: number;
     math: number;
@@ -12,8 +14,12 @@ export interface UserStats {
     digitSpan: number;
     reverseWord: number;
     oddOneOut: number;
-    reactionTime: number; // stores lowest time in ms
+    reactionTime: number; 
     directionalSwipe: number;
+    numberPyramid: number;
+    vowelHunter: number;
+    gridRotation: number;
+    colorSequence: number;
   };
   history: {
     date: string;
@@ -28,6 +34,8 @@ const DEFAULT_STATS: UserStats = {
   brainScore: 0,
   streak: 0,
   lastPlayed: null,
+  dailyGoalMinutes: 15,
+  playTimeSeconds: {},
   highScores: {
     stroop: 0,
     math: 0,
@@ -38,6 +46,10 @@ const DEFAULT_STATS: UserStats = {
     oddOneOut: 0,
     reactionTime: 0,
     directionalSwipe: 0,
+    numberPyramid: 0,
+    vowelHunter: 0,
+    gridRotation: 0,
+    colorSequence: 0,
   },
   history: [],
 };
@@ -48,11 +60,11 @@ export function getStats(): UserStats {
   if (!saved) return DEFAULT_STATS;
   try {
     const parsed = JSON.parse(saved);
-    // Merge with defaults to handle new keys added in updates
     return { 
       ...DEFAULT_STATS, 
       ...parsed, 
-      highScores: { ...DEFAULT_STATS.highScores, ...parsed.highScores } 
+      highScores: { ...DEFAULT_STATS.highScores, ...parsed.highScores },
+      playTimeSeconds: parsed.playTimeSeconds || {}
     };
   } catch {
     return DEFAULT_STATS;
@@ -70,13 +82,37 @@ export function updateUserName(name: string) {
   saveStats(stats);
 }
 
+export function updateDailyGoal(minutes: number) {
+  const stats = getStats();
+  stats.dailyGoalMinutes = minutes;
+  saveStats(stats);
+}
+
+export function addPlayTime(seconds: number) {
+  const stats = getStats();
+  const today = new Date().toISOString().split('T')[0];
+  stats.playTimeSeconds[today] = (stats.playTimeSeconds[today] || 0) + seconds;
+  saveStats(stats);
+}
+
+export function calculateBrainAge(stats: UserStats): number {
+  const baseAge = 35;
+  const totalScore = stats.brainScore;
+  const gameCount = Object.values(stats.highScores).filter(s => s > 0).length;
+  
+  if (gameCount === 0) return baseAge;
+  
+  // Reduction based on mastery (1 year younger for every 2000 points)
+  const reduction = Math.min(15, totalScore / 2000);
+  return Math.max(18, Math.round(baseAge - reduction));
+}
+
 export function updateHighScores(game: keyof UserStats['highScores'], score: number) {
   const stats = getStats();
   const currentHigh = stats.highScores[game];
   
   let isNewHigh = false;
   if (game === 'schulte' || game === 'reactionTime') {
-    // For time-based games, lower is better (if not 0)
     if (score > 0 && (currentHigh === 0 || score < currentHigh)) {
       stats.highScores[game] = score;
       isNewHigh = true;
@@ -89,10 +125,9 @@ export function updateHighScores(game: keyof UserStats['highScores'], score: num
   }
 
   if (isNewHigh) {
-    stats.brainScore += 50; // Bonus for new high score
+    stats.brainScore += 50; 
   }
 
-  // Update history
   const today = new Date().toISOString().split('T')[0];
   const lastHistory = stats.history[stats.history.length - 1];
   
@@ -102,7 +137,6 @@ export function updateHighScores(game: keyof UserStats['highScores'], score: num
     stats.history.push({ date: today, score });
   }
 
-  // Update streak
   if (stats.lastPlayed !== today) {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
@@ -116,7 +150,6 @@ export function updateHighScores(game: keyof UserStats['highScores'], score: num
     stats.lastPlayed = today;
   }
 
-  // Add some points for playing regardless of high score
   stats.brainScore += Math.floor(score / 10) > 0 ? Math.floor(score / 10) : 5;
   saveStats(stats);
 }

@@ -29,7 +29,7 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.75rem;
+    --radius: 1.25rem;
   }
   .dark {
     --background: 222 47% 11%;
@@ -61,5 +61,15 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    touch-action: manipulation;
   }
+}
+
+@keyframes vowel-fall {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(700px); }
+}
+
+.animate-vowel-fall {
+  animation: vowel-fall 4s linear forwards;
 }
