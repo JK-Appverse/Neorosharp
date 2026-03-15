@@ -107,7 +107,7 @@ export default function SchulteTable({ onBack }: { onBack: () => void }) {
             className={`aspect-square rounded-lg flex items-center justify-center text-xl font-bold transition-all ${
               n < nextExpected 
               ? "bg-accent/20 text-accent/40 border-accent/10 cursor-default" 
-              : "bg-muted/20 hover:bg-muted text-foreground border border-muted hover:border-primary active:scale-90"
+              : "bg-muted/20 hover:bg-muted text-foreground hover:text-slate-900 border border-muted hover:border-primary active:scale-90"
             }`}
           >
             {n}

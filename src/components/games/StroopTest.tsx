@@ -125,7 +125,7 @@ export default function StroopTest({ onBack }: { onBack: () => void }) {
           <Button
             key={c.name}
             variant="outline"
-            className="h-20 text-xl font-bold border-2 hover:bg-muted transition-colors"
+            className="h-20 text-xl font-bold border-2 hover:bg-muted transition-colors hover:text-slate-900"
             onClick={() => handleChoice(c.value)}
           >
             {c.name}
