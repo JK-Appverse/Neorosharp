@@ -1,5 +1,6 @@
 
 export interface UserStats {
+  name: string;
   brainScore: number;
   streak: number;
   lastPlayed: string | null;
@@ -23,6 +24,7 @@ export interface UserStats {
 const STORAGE_KEY = 'neurosharp_user_stats';
 
 const DEFAULT_STATS: UserStats = {
+  name: 'Sharp Mind',
   brainScore: 0,
   streak: 0,
   lastPlayed: null,
@@ -47,7 +49,11 @@ export function getStats(): UserStats {
   try {
     const parsed = JSON.parse(saved);
     // Merge with defaults to handle new keys added in updates
-    return { ...DEFAULT_STATS, ...parsed, highScores: { ...DEFAULT_STATS.highScores, ...parsed.highScores } };
+    return { 
+      ...DEFAULT_STATS, 
+      ...parsed, 
+      highScores: { ...DEFAULT_STATS.highScores, ...parsed.highScores } 
+    };
   } catch {
     return DEFAULT_STATS;
   }
@@ -56,6 +62,12 @@ export function getStats(): UserStats {
 export function saveStats(stats: UserStats) {
   if (typeof window === 'undefined') return;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(stats));
+}
+
+export function updateUserName(name: string) {
+  const stats = getStats();
+  stats.name = name;
+  saveStats(stats);
 }
 
 export function updateHighScores(game: keyof UserStats['highScores'], score: number) {
