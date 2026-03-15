@@ -30,6 +30,7 @@ import WordScramble from '@/components/games/WordScramble';
 import LogicTraps from '@/components/games/LogicTraps';
 import ImagePuzzle from '@/components/games/ImagePuzzle';
 import WordChain from '@/components/games/WordChain';
+import VersusMode from '@/components/games/VersusMode';
 
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -200,7 +201,7 @@ export default function Home() {
                     onClick={() => setActiveView(game)}
                     className="flex-shrink-0 w-28 md:flex-1 rounded-xl border-amber-100 dark:border-amber-900/50 hover:border-amber-300 hover:bg-amber-50 dark:hover:bg-amber-900/20 h-14 flex flex-col items-center justify-center p-1"
                   >
-                    <span className="text-[8px] font-black uppercase text-amber-600 truncate w-full text-center">{game === 'stroop' ? 'Color-Word' : game === 'wordChain' ? 'Word Chain' : game === 'pattern' ? 'Memory Grid' : game}</span>
+                    <span className="text-[8px] font-black uppercase text-amber-600 truncate w-full text-center">{game === 'stroop' ? 'Ink Color' : game === 'wordChain' ? 'Word Sequence' : game === 'pattern' ? 'Memory Grid' : game}</span>
                     <span className="text-[8px] font-bold text-slate-400">Challenge {i+1}</span>
                   </Button>
                 ))}
