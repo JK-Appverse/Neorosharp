@@ -58,17 +58,14 @@ export default function Home() {
     return { name: 'Diamond', color: 'bg-indigo-600/40', border: 'border-indigo-400/40', text: 'text-indigo-100' };
   };
 
-  const getGlobalRank = (score: number) => {
-    if (score < 500) return "Top 90%";
-    if (score < 1500) return "Top 75%";
-    if (score < 5000) return "Top 50%";
-    if (score < 10000) return "Top 25%";
-    if (score < 20000) return "Top 10%";
-    return "Top 1%";
+  const getBrainPower = (score: number) => {
+    // Percentage based on a theoretical 25,000 "mastery" score
+    const percentage = Math.min(100, Math.floor((score / 25000) * 100));
+    return `${percentage}%`;
   };
 
   if (activeView === 'profile') {
-    return <ProfileView stats={stats} onBack={() => setActiveView('none')} />;
+    return <ProfileView stats={stats} onBack={() => setActiveView('none')} brainPower={getBrainPower(stats.brainScore)} />;
   }
 
   if (activeView !== 'none') {
@@ -91,7 +88,7 @@ export default function Home() {
 
   const chartData = stats.history.slice(-7);
   const rank = getRankDetails(stats.brainScore);
-  const globalRank = getGlobalRank(stats.brainScore);
+  const brainPower = getBrainPower(stats.brainScore);
 
   return (
     <div className="min-h-screen pb-12 bg-slate-50/50">
@@ -132,8 +129,8 @@ export default function Home() {
                 <span className={`font-black text-xl ${rank.text}`}>{rank.name}</span>
               </div>
               <div className="bg-white/10 backdrop-blur-md px-6 py-2 rounded-xl border border-white/20">
-                <span className="block text-[10px] uppercase font-bold text-primary-foreground/70 mb-0.5">Global Rank</span>
-                <span className="font-black text-xl text-white">{globalRank}</span>
+                <span className="block text-[10px] uppercase font-bold text-primary-foreground/70 mb-0.5">Brain Power</span>
+                <span className="font-black text-xl text-white">{brainPower}</span>
               </div>
             </div>
           </div>
@@ -302,7 +299,7 @@ function GameCard({ title, desc, icon, highScore, unit = "", color, onClick }: a
   );
 }
 
-function ProfileView({ stats, onBack }: { stats: UserStats, onBack: () => void }) {
+function ProfileView({ stats, onBack, brainPower }: { stats: UserStats, onBack: () => void, brainPower: string }) {
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(stats.name);
 
@@ -345,7 +342,7 @@ function ProfileView({ stats, onBack }: { stats: UserStats, onBack: () => void }
                   </Button>
                 </div>
               )}
-              <p className="text-primary-foreground/70 text-lg mt-2 font-medium">Global Rank: Elite Master • Member since 2024</p>
+              <p className="text-primary-foreground/70 text-lg mt-2 font-medium">Cognitive Power: {brainPower} • Member since 2024</p>
             </div>
           </div>
         </div>
@@ -356,7 +353,7 @@ function ProfileView({ stats, onBack }: { stats: UserStats, onBack: () => void }
           <StatBox label="Total Score" value={stats.brainScore.toLocaleString()} />
           <StatBox label="Daily Streak" value={`${stats.streak} Days`} />
           <StatBox label="Exercises Done" value="1,240" />
-          <StatBox label="Mental Age" value="21" />
+          <StatBox label="Mind Capacity" value={brainPower} />
         </div>
 
         <Card className="border-none shadow-2xl bg-white rounded-[2.5rem] overflow-hidden">
