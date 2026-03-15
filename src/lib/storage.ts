@@ -23,6 +23,7 @@ export interface UserStats {
     wordScramble: number;
     logicTraps: number;
     imagePuzzle: number;
+    wordChain: number;
     colorChaos: number;
     missingLink: number;
     rotationStation: number;
@@ -63,6 +64,7 @@ const DEFAULT_STATS: UserStats = {
     wordScramble: 0,
     logicTraps: 0,
     imagePuzzle: 0,
+    wordChain: 0,
     colorChaos: 0,
     missingLink: 0,
     rotationStation: 0,
