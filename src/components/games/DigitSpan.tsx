@@ -82,6 +82,9 @@ export default function DigitSpan({ onBack }: { onBack: () => void }) {
     return (
       <Card className="w-full border-none shadow-2xl bg-white rounded-3xl overflow-hidden">
         <CardHeader className="text-center pt-10">
+          <Button variant="ghost" size="sm" className="w-fit mb-4 absolute left-4 top-4" onClick={onBack}>
+            <ArrowLeft className="mr-2 h-4 w-4" /> Exit
+          </Button>
           <div className="mx-auto bg-slate-100 p-5 rounded-full w-20 h-20 flex items-center justify-center mb-6">
             <Trophy className="text-slate-400 w-10 h-10" />
           </div>
@@ -90,7 +93,7 @@ export default function DigitSpan({ onBack }: { onBack: () => void }) {
             Max Digits: {level - 1}
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col gap-4 pb-10">
+        <CardContent className="flex flex-col gap-4 pb-10 px-8">
           <Button size="lg" className="w-full font-black py-6 rounded-2xl" onClick={startGame}>Try Again</Button>
           <Button variant="outline" size="lg" className="w-full font-black py-6 rounded-2xl" onClick={onBack}>Main Menu</Button>
         </CardContent>
@@ -101,7 +104,10 @@ export default function DigitSpan({ onBack }: { onBack: () => void }) {
   return (
     <div className="w-full space-y-6">
       <div className="flex justify-between items-center bg-white p-6 rounded-[2rem] shadow-xl border-slate-100 border">
-        <div className="flex flex-col">
+        <Button variant="ghost" size="icon" onClick={onBack} className="h-10 w-10 rounded-full hover:bg-slate-100">
+          <ArrowLeft className="h-5 w-5" />
+        </Button>
+        <div className="flex flex-col flex-1 px-4">
           <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest">Target Digits</span>
           <span className="text-3xl font-black text-purple-600">{level}</span>
         </div>

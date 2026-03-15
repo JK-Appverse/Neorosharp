@@ -90,10 +90,13 @@ export default function StroopTest({ onBack }: { onBack: () => void }) {
     return (
       <Card className="w-full max-w-lg mx-auto border-none shadow-xl bg-white/50 backdrop-blur-sm">
         <CardHeader className="text-center">
+          <Button variant="ghost" size="sm" className="w-fit mb-4 absolute left-4 top-4" onClick={onBack}>
+            <ArrowLeft className="mr-2 h-4 w-4" /> Exit
+          </Button>
           <CardTitle className="text-3xl font-bold">Time's Up!</CardTitle>
           <CardDescription className="text-lg">You scored {score} points.</CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col gap-4">
+        <CardContent className="flex flex-col gap-4 px-8 pb-8">
           <Button size="lg" className="w-full" onClick={startGame}>Try Again</Button>
           <Button variant="outline" size="lg" className="w-full" onClick={onBack}>Menu</Button>
         </CardContent>
@@ -104,7 +107,10 @@ export default function StroopTest({ onBack }: { onBack: () => void }) {
   return (
     <div className="w-full max-w-lg mx-auto space-y-6">
       <div className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border">
-        <div className="flex flex-col">
+        <Button variant="ghost" size="icon" onClick={onBack} className="h-8 w-8 rounded-full">
+          <ArrowLeft className="h-4 w-4" />
+        </Button>
+        <div className="flex flex-col flex-1 px-4">
           <span className="text-xs text-muted-foreground font-bold uppercase">Score</span>
           <span className="text-2xl font-bold text-primary">{score}</span>
         </div>

@@ -93,10 +93,13 @@ export default function MathRush({ onBack }: { onBack: () => void }) {
     return (
       <Card className="w-full max-w-lg mx-auto border-none shadow-xl bg-white/50 backdrop-blur-sm">
         <CardHeader className="text-center">
+          <Button variant="ghost" size="sm" className="w-fit mb-4 absolute left-4 top-4" onClick={onBack}>
+            <ArrowLeft className="mr-2 h-4 w-4" /> Exit
+          </Button>
           <CardTitle className="text-3xl font-bold">Game Over</CardTitle>
           <CardDescription className="text-lg">Final Score: {score}</CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col gap-4">
+        <CardContent className="flex flex-col gap-4 px-8 pb-8">
           <Button size="lg" className="w-full" onClick={startGame}>Play Again</Button>
           <Button variant="outline" size="lg" className="w-full" onClick={onBack}>Main Menu</Button>
         </CardContent>
@@ -107,17 +110,20 @@ export default function MathRush({ onBack }: { onBack: () => void }) {
   return (
     <div className="w-full max-w-lg mx-auto space-y-6">
       <div className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border">
-        <div className="flex flex-col">
+        <Button variant="ghost" size="icon" onClick={onBack} className="h-8 w-8 rounded-full">
+          <ArrowLeft className="h-4 w-4" />
+        </Button>
+        <div className="flex flex-col flex-1 px-4">
           <span className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Score</span>
           <span className="text-2xl font-bold text-primary">{score}</span>
         </div>
         <div className="flex flex-col items-center">
            <span className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Rush Time</span>
-           <div className="h-1.5 w-32 bg-muted rounded-full overflow-hidden mt-1">
+           <div className="h-1.5 w-24 bg-muted rounded-full overflow-hidden mt-1">
              <div className="h-full bg-accent transition-all duration-100" style={{ width: `${(timeLeft / 3) * 100}%` }}></div>
            </div>
         </div>
-        <div className="flex flex-col items-end">
+        <div className="flex flex-col items-end pl-4">
           <span className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Session</span>
           <span className="text-2xl font-bold text-foreground">{Math.ceil(totalTime)}s</span>
         </div>

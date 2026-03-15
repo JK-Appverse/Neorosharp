@@ -5,7 +5,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { updateHighScores } from '@/lib/storage';
-import { Timer, ArrowLeft, Zap, Target } from "lucide-react";
+import { Timer, ArrowLeft, Zap, Target, X } from "lucide-react";
 import { playSound } from '@/lib/audio';
 
 export default function ReactionTime({ onBack }: { onBack: () => void }) {
@@ -79,6 +79,15 @@ export default function ReactionTime({ onBack }: { onBack: () => void }) {
         'bg-slate-900'
       }`}
     >
+      <Button 
+        variant="ghost" 
+        size="icon" 
+        className="fixed top-4 left-4 z-[100] text-white/50 hover:text-white hover:bg-white/10"
+        onClick={(e) => { e.stopPropagation(); onBack(); }}
+      >
+        <ArrowLeft className="w-6 h-6" />
+      </Button>
+
       <div className="text-white text-center p-8">
         {gameState === 'waiting' && (
           <div className="animate-pulse">
