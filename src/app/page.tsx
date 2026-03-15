@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -44,14 +43,20 @@ export default function Home() {
   useEffect(() => {
     setStats(getStats());
     
-    // Initialize theme from storage or system preference
+    // Initialize theme: check storage, if empty force 'light'
     const savedTheme = localStorage.getItem('neurosharp_theme') as 'light' | 'dark';
     if (savedTheme) {
       setTheme(savedTheme);
-      if (savedTheme === 'dark') document.documentElement.classList.add('dark');
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setTheme('dark');
-      document.documentElement.classList.add('dark');
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    } else {
+      // Force 'light' for first time users
+      setTheme('light');
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('neurosharp_theme', 'light');
     }
   }, [activeView]);
 
