@@ -50,25 +50,11 @@ export default function WordChain({ onBack }: { onBack: () => void }) {
     let interval: NodeJS.Timeout;
     if (gameState === 'showing' && showChainTimer > 0) {
       interval = setInterval(() => {
-        setShowChainTimer(prev => Math.max(0, prev - 1));
-      }, 1000);
+        setShowChainTimer(prev => Math.max(0, prev - 0.1));
+      }, 100);
     } else if (gameState === 'showing' && showChainTimer <= 0) {
-      // Create a selection pool that grows with the chain length
-      // Starts small and gets larger to increase difficulty
-      const poolSize = Math.min(20, chain.length + 3 + Math.floor(chain.length / 2));
-      const distractorsNeeded = poolSize - chain.length;
-      const distractors: string[] = [];
-      const used = new Set(chain);
-      
-      while (distractors.length < distractorsNeeded) {
-        const randomWord = WORD_POOL[Math.floor(Math.random() * WORD_POOL.length)];
-        if (!used.has(randomWord)) {
-          distractors.push(randomWord);
-          used.add(randomWord);
-        }
-      }
-
-      const pool = [...chain, ...distractors].sort(() => Math.random() - 0.5);
+      // Pool now only contains the words from the chain, shuffled.
+      const pool = [...chain].sort(() => Math.random() - 0.5);
       setSelectionPool(pool);
       setGameState('playing');
     }
@@ -103,7 +89,7 @@ export default function WordChain({ onBack }: { onBack: () => void }) {
     return (
       <Card className="w-full border-none shadow-2xl bg-white dark:bg-slate-900 rounded-3xl overflow-hidden">
         <CardHeader className="text-center pt-8">
-          <Button variant="ghost" size="sm" className="w-fit mb-4 absolute left-4 top-4" onClick={onBack}>
+          <Button variant="ghost" size="sm" className="w-fit mb-4 absolute left-4 top-4 hover:text-slate-900" onClick={onBack}>
             <ArrowLeft className="mr-2 h-4 w-4" /> Back
           </Button>
           <div className="mx-auto bg-emerald-100 dark:bg-emerald-900/40 p-5 rounded-3xl w-20 h-20 flex items-center justify-center mb-6">
@@ -111,7 +97,7 @@ export default function WordChain({ onBack }: { onBack: () => void }) {
           </div>
           <CardTitle className="text-3xl font-black text-slate-800 dark:text-slate-100">Word Chain</CardTitle>
           <CardDescription className="text-base font-medium px-4 text-slate-600 dark:text-slate-400">
-            Memorize the sequence of words. When ready, tap the words in the exact order they appeared.
+            Memorize the sequence of words. Then, tap them in the exact order they appeared.
           </CardDescription>
         </CardHeader>
         <CardContent className="pb-10 pt-4 px-8">
@@ -131,7 +117,7 @@ export default function WordChain({ onBack }: { onBack: () => void }) {
         <p className="text-xl font-bold text-emerald-600 dark:text-emerald-400 mb-8">Score: {score}</p>
         <div className="space-y-4">
           <Button size="lg" className="w-full font-black rounded-2xl bg-emerald-600 text-white" onClick={startGame}>Try Again</Button>
-          <Button variant="outline" size="lg" className="w-full font-black rounded-2xl" onClick={onBack}>Dashboard</Button>
+          <Button variant="outline" size="lg" className="w-full font-black rounded-2xl hover:text-slate-900" onClick={onBack}>Dashboard</Button>
         </div>
       </Card>
     );
@@ -175,7 +161,7 @@ export default function WordChain({ onBack }: { onBack: () => void }) {
             <div className="mt-12 flex flex-col items-center">
               <div className="h-1.5 w-32 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden mb-2">
                 <div 
-                  className="h-full bg-emerald-500 transition-all duration-1000 linear" 
+                  className="h-full bg-emerald-500 transition-all duration-100 linear" 
                   style={{ width: `${(showChainTimer / (chain.length * 1.5)) * 100}%` }}
                 />
               </div>

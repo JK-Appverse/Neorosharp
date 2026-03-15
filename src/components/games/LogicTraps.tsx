@@ -66,7 +66,7 @@ export default function LogicTraps({ onBack }: { onBack: () => void }) {
     return (
       <Card className="w-full border-none shadow-2xl bg-white dark:bg-slate-900 rounded-3xl overflow-hidden">
         <CardHeader className="text-center pt-8">
-          <Button variant="ghost" size="sm" className="w-fit mb-4 absolute left-4 top-4" onClick={onBack}>
+          <Button variant="ghost" size="sm" className="w-fit mb-4 absolute left-4 top-4 hover:text-slate-900" onClick={onBack}>
             <ArrowLeft className="mr-2 h-4 w-4" /> Back
           </Button>
           <div className="mx-auto bg-indigo-100 dark:bg-indigo-900/40 p-5 rounded-3xl w-20 h-20 flex items-center justify-center mb-6">
@@ -94,7 +94,7 @@ export default function LogicTraps({ onBack }: { onBack: () => void }) {
         <p className="text-xl font-bold text-indigo-600 dark:text-indigo-400 mb-8">Score: {score}</p>
         <div className="space-y-4">
           <Button size="lg" className="w-full font-black rounded-2xl bg-indigo-600 text-white" onClick={startGame}>Re-Run Traps</Button>
-          <Button variant="outline" size="lg" className="w-full font-black rounded-2xl" onClick={onBack}>Dashboard</Button>
+          <Button variant="outline" size="lg" className="w-full font-black rounded-2xl hover:text-slate-900" onClick={onBack}>Dashboard</Button>
         </div>
       </Card>
     );
