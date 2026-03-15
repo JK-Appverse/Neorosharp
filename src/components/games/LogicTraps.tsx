@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -127,10 +128,10 @@ export default function LogicTraps({ onBack }: { onBack: () => void }) {
                 <Button 
                   key={i} 
                   variant="outline" 
-                  className="h-16 rounded-2xl text-lg font-bold border-2 border-slate-100 dark:border-slate-800 hover:bg-indigo-600 hover:text-white dark:hover:text-white transition-all hover:border-indigo-600 group"
+                  className="h-16 rounded-2xl text-lg font-bold border-2 border-slate-100 dark:border-slate-800 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-100 transition-all hover:border-indigo-600 group"
                   onClick={() => handleChoice(opt)}
                 >
-                  <span className="group-hover:text-white">{opt}</span>
+                  <span className="group-hover:text-slate-900 dark:group-hover:text-slate-100">{opt}</span>
                 </Button>
               ))}
             </div>

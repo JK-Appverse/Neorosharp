@@ -53,8 +53,10 @@ export default function WordChain({ onBack }: { onBack: () => void }) {
         setShowChainTimer(prev => Math.max(0, prev - 1));
       }, 1000);
     } else if (gameState === 'showing' && showChainTimer <= 0) {
-      // Create a selection pool of words
-      const distractorsNeeded = 12 - chain.length;
+      // Create a selection pool that grows with the chain length
+      // Starts small and gets larger to increase difficulty
+      const poolSize = Math.min(20, chain.length + 3 + Math.floor(chain.length / 2));
+      const distractorsNeeded = poolSize - chain.length;
       const distractors: string[] = [];
       const used = new Set(chain);
       
@@ -208,7 +210,7 @@ export default function WordChain({ onBack }: { onBack: () => void }) {
                   key={idx}
                   variant="outline"
                   onClick={() => handleWordSelect(word)}
-                  className="h-16 text-lg font-black rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition-all active:scale-95"
+                  className="h-16 text-lg font-black rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-slate-900 dark:hover:text-slate-100 transition-all active:scale-95"
                 >
                   {word}
                 </Button>
