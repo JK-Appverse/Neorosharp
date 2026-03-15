@@ -8,6 +8,11 @@ export interface UserStats {
     math: number;
     pattern: number;
     schulte: number;
+    digitSpan: number;
+    reverseWord: number;
+    oddOneOut: number;
+    reactionTime: number; // stores lowest time in ms
+    directionalSwipe: number;
   };
   history: {
     date: string;
@@ -26,6 +31,11 @@ const DEFAULT_STATS: UserStats = {
     math: 0,
     pattern: 0,
     schulte: 0,
+    digitSpan: 0,
+    reverseWord: 0,
+    oddOneOut: 0,
+    reactionTime: 0,
+    directionalSwipe: 0,
   },
   history: [],
 };
@@ -35,7 +45,9 @@ export function getStats(): UserStats {
   const saved = localStorage.getItem(STORAGE_KEY);
   if (!saved) return DEFAULT_STATS;
   try {
-    return JSON.parse(saved);
+    const parsed = JSON.parse(saved);
+    // Merge with defaults to handle new keys added in updates
+    return { ...DEFAULT_STATS, ...parsed, highScores: { ...DEFAULT_STATS.highScores, ...parsed.highScores } };
   } catch {
     return DEFAULT_STATS;
   }
@@ -50,8 +62,21 @@ export function updateHighScores(game: keyof UserStats['highScores'], score: num
   const stats = getStats();
   const currentHigh = stats.highScores[game];
   
-  if (score > currentHigh || (game === 'schulte' && (currentHigh === 0 || score < currentHigh))) {
-    stats.highScores[game] = score;
+  let isNewHigh = false;
+  if (game === 'schulte' || game === 'reactionTime') {
+    // For time-based games, lower is better (if not 0)
+    if (score > 0 && (currentHigh === 0 || score < currentHigh)) {
+      stats.highScores[game] = score;
+      isNewHigh = true;
+    }
+  } else {
+    if (score > currentHigh) {
+      stats.highScores[game] = score;
+      isNewHigh = true;
+    }
+  }
+
+  if (isNewHigh) {
     stats.brainScore += 50; // Bonus for new high score
   }
 
@@ -79,6 +104,7 @@ export function updateHighScores(game: keyof UserStats['highScores'], score: num
     stats.lastPlayed = today;
   }
 
-  stats.brainScore += Math.floor(score / 10);
+  // Add some points for playing regardless of high score
+  stats.brainScore += Math.floor(score / 10) > 0 ? Math.floor(score / 10) : 5;
   saveStats(stats);
 }
