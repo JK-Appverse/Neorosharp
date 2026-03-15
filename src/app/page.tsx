@@ -9,7 +9,8 @@ import { getStats, UserStats, updateUserName, calculateBrainAge, updateDailyGoal
 import { 
   Brain, Zap, Eye, Grid, TrendingUp, Award, ChevronRight, Target, Hash, 
   RefreshCw, Search, Timer, ArrowRightLeft, User, ArrowLeft, CheckCircle2, 
-  Save, Triangle, MousePointer2, Settings, BarChart3, Clock, Type, Swords, Sparkles
+  Save, Triangle, MousePointer2, Settings, BarChart3, Clock, Type, Swords, Sparkles,
+  Sun, Moon
 } from "lucide-react";
 
 import StroopTest from '@/components/games/StroopTest';
@@ -35,10 +36,32 @@ type ActiveView = 'none' | 'stroop' | 'math' | 'pattern' | 'schulte' | 'digitSpa
 export default function Home() {
   const [activeView, setActiveView] = useState<ActiveView>('none');
   const [stats, setStats] = useState<UserStats | null>(null);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
     setStats(getStats());
+    
+    // Initialize theme from storage or system preference
+    const savedTheme = localStorage.getItem('neurosharp_theme') as 'light' | 'dark';
+    if (savedTheme) {
+      setTheme(savedTheme);
+      if (savedTheme === 'dark') document.documentElement.classList.add('dark');
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      setTheme('dark');
+      document.documentElement.classList.add('dark');
+    }
   }, [activeView]);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('neurosharp_theme', newTheme);
+    if (newTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  };
 
   const dailyChallengeGames = useMemo(() => {
     // Deterministic daily challenge based on date
@@ -105,17 +128,25 @@ export default function Home() {
   const chartData = stats.history.slice(-7);
 
   return (
-    <div className="min-h-screen pb-12 bg-slate-50/50">
+    <div className="min-h-screen pb-12 bg-background">
       <header className="bg-primary pt-12 pb-24 px-4 text-white">
         <div className="container mx-auto max-w-6xl">
           <div className="flex items-center justify-between mb-12">
             <div className="flex items-center gap-2">
-              <div className="bg-white p-2 rounded-xl">
+              <div className="bg-white p-2 rounded-xl dark:bg-slate-800">
                 <Brain className="text-primary w-8 h-8" />
               </div>
               <h1 className="text-3xl font-extrabold tracking-tighter">NeuroSharp</h1>
             </div>
             <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="rounded-full bg-white/10 border-white/20 text-white hover:bg-white hover:text-primary transition-all"
+                onClick={toggleTheme}
+              >
+                {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+              </Button>
               <Button 
                 variant="outline" 
                 size="icon" 
@@ -154,20 +185,20 @@ export default function Home() {
 
       <main className="container mx-auto px-4 -mt-12 space-y-12 max-w-6xl">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="rounded-[2.5rem] border-none shadow-xl bg-white overflow-hidden p-6">
+          <Card className="rounded-[2.5rem] border-none shadow-xl bg-card overflow-hidden p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-black text-slate-800 flex items-center gap-2"><Clock className="w-5 h-5 text-primary" /> Daily Goal</h3>
+              <h3 className="font-black text-foreground flex items-center gap-2"><Clock className="w-5 h-5 text-primary" /> Daily Goal</h3>
               <span className="text-xs font-black text-primary">{Math.round(progressPercent)}%</span>
             </div>
-            <div className="h-4 w-full bg-slate-100 rounded-full overflow-hidden mb-2">
+            <div className="h-4 w-full bg-muted rounded-full overflow-hidden mb-2">
               <div className="h-full bg-primary transition-all duration-500" style={{ width: `${progressPercent}%` }}></div>
             </div>
             <p className="text-xs text-muted-foreground font-bold">{Math.floor(todayPlayTimeSeconds / 60)} / {goalMinutes} mins today</p>
           </Card>
           
-          <Card className="rounded-[2.5rem] border-none shadow-xl bg-white overflow-hidden p-6 col-span-1 md:col-span-2">
+          <Card className="rounded-[2.5rem] border-none shadow-xl bg-card overflow-hidden p-6 col-span-1 md:col-span-2">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-black text-slate-800 flex items-center gap-2"><Sparkles className="w-5 h-5 text-amber-500" /> Daily Challenges</h3>
+              <h3 className="font-black text-foreground flex items-center gap-2"><Sparkles className="w-5 h-5 text-amber-500" /> Daily Challenges</h3>
               <span className="text-xs font-black text-amber-600">2X Points</span>
             </div>
             <div className="flex gap-4">
@@ -176,7 +207,7 @@ export default function Home() {
                   key={i} 
                   variant="outline" 
                   onClick={() => setActiveView(game)}
-                  className="flex-1 rounded-2xl border-amber-100 hover:border-amber-300 hover:bg-amber-50 h-16 flex flex-col items-center justify-center"
+                  className="flex-1 rounded-2xl border-amber-100 dark:border-amber-900/50 hover:border-amber-300 hover:bg-amber-50 dark:hover:bg-amber-900/20 h-16 flex flex-col items-center justify-center"
                 >
                   <span className="text-[10px] font-black uppercase text-amber-600">{game}</span>
                   <span className="text-xs font-bold text-slate-400">Bonus</span>
@@ -188,7 +219,7 @@ export default function Home() {
 
         <section>
           <div className="flex flex-col items-center justify-center mb-10 px-2">
-            <h3 className="text-2xl font-black flex items-center gap-2 text-slate-800">
+            <h3 className="text-2xl font-black flex items-center gap-2 text-foreground">
               <Target className="w-7 h-7 text-primary" /> Training Modules
             </h3>
             <span className="text-xs text-muted-foreground font-black uppercase tracking-widest mt-1">Advanced Exercises Available</span>
@@ -294,7 +325,7 @@ export default function Home() {
           </div>
         </section>
 
-        <Card className="border-none shadow-2xl bg-white overflow-hidden rounded-[2.5rem]">
+        <Card className="border-none shadow-2xl bg-card overflow-hidden rounded-[2.5rem]">
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-xl font-black">
               <TrendingUp className="w-5 h-5 text-primary" /> Progress Analytics
@@ -305,11 +336,11 @@ export default function Home() {
             {chartData.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" opacity={0.1} />
                   <XAxis dataKey="date" hide />
                   <YAxis hide />
                   <Tooltip 
-                    contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)' }}
+                    contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)', backgroundColor: 'hsl(var(--card))', color: 'hsl(var(--card-foreground))' }}
                   />
                   <Area 
                     type="monotone" 
@@ -322,7 +353,7 @@ export default function Home() {
                 </AreaChart>
               </ResponsiveContainer>
             ) : (
-              <div className="flex flex-col items-center justify-center h-full text-muted-foreground bg-slate-50 rounded-2xl border border-dashed">
+              <div className="flex flex-col items-center justify-center h-full text-muted-foreground bg-muted/20 rounded-2xl border border-dashed">
                 <p className="font-bold">Complete your first training to unlock analytics</p>
               </div>
             )}
@@ -330,7 +361,7 @@ export default function Home() {
         </Card>
       </main>
       
-      <footer className="py-12 border-t bg-white/50 backdrop-blur-md">
+      <footer className="py-12 border-t bg-card/50 backdrop-blur-md">
         <div className="container mx-auto px-4 text-center">
           <div className="flex justify-center gap-6 mb-4">
             <Brain className="w-6 h-6 text-primary/40" />
@@ -348,19 +379,19 @@ function GameCard({ title, desc, icon, highScore, unit = "", color, onClick }: a
   return (
     <button 
       onClick={onClick}
-      className="group relative flex flex-col p-6 rounded-[2.5rem] bg-white shadow-lg hover:shadow-2xl transition-all duration-300 border border-slate-100 hover:border-primary/30 text-left active:scale-[0.98]"
+      className="group relative flex flex-col p-6 rounded-[2.5rem] bg-card shadow-lg hover:shadow-2xl transition-all duration-300 border border-border/50 hover:border-primary/30 text-left active:scale-[0.98]"
     >
       <div className={`p-4 rounded-2xl ${color} text-white mb-6 w-fit group-hover:scale-110 transition-transform duration-300 shadow-xl`}>
         {icon}
       </div>
-      <h4 className="font-bold text-xl mb-1 text-slate-800 group-hover:text-slate-950">{title}</h4>
-      <p className="text-sm text-muted-foreground mb-6 font-medium leading-tight group-hover:text-slate-600">{desc}</p>
-      <div className="mt-auto flex items-center justify-between bg-slate-50 p-4 rounded-2xl group-hover:bg-primary/5 transition-colors">
+      <h4 className="font-bold text-xl mb-1 text-foreground group-hover:text-primary transition-colors">{title}</h4>
+      <p className="text-sm text-muted-foreground mb-6 font-medium leading-tight group-hover:text-foreground/80">{desc}</p>
+      <div className="mt-auto flex items-center justify-between bg-muted/30 p-4 rounded-2xl group-hover:bg-primary/10 transition-colors">
         <div className="flex flex-col">
-          <span className="text-[9px] uppercase font-black text-slate-400 tracking-[0.2em]">Record</span>
+          <span className="text-[9px] uppercase font-black text-muted-foreground tracking-[0.2em]">Record</span>
           <span className="font-black text-lg text-primary">{highScore || '—'}{highScore ? unit : ''}</span>
         </div>
-        <div className="bg-white p-2 rounded-full shadow-sm group-hover:bg-primary group-hover:text-white transition-all">
+        <div className="bg-card p-2 rounded-full shadow-sm group-hover:bg-primary group-hover:text-white transition-all">
           <ChevronRight className="w-5 h-5" />
         </div>
       </div>
@@ -384,7 +415,7 @@ function ProfileView({ stats, onBack, brainAge }: { stats: UserStats, onBack: ()
   };
 
   return (
-    <div className="min-h-screen bg-slate-50/50 pb-20">
+    <div className="min-h-screen bg-background pb-20">
       <div className="bg-primary pt-12 pb-32 px-4 text-white">
         <div className="container mx-auto max-w-4xl">
           <Button variant="ghost" className="text-white hover:bg-white/10 mb-8" onClick={onBack}>
@@ -392,7 +423,7 @@ function ProfileView({ stats, onBack, brainAge }: { stats: UserStats, onBack: ()
           </Button>
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="bg-white/10 p-1 rounded-full border-4 border-white/20">
-              <div className="bg-white p-6 rounded-full">
+              <div className="bg-white dark:bg-slate-800 p-6 rounded-full">
                 <User className="w-20 h-20 text-primary" />
               </div>
             </div>
@@ -440,12 +471,12 @@ function ProfileView({ stats, onBack, brainAge }: { stats: UserStats, onBack: ()
           <StatBox label="Mind Level" value={brainAge < 25 ? 'Genius' : brainAge < 35 ? 'Sharp' : 'Learning'} />
         </div>
 
-        <Button onClick={handleDownloadReport} className="w-full bg-white text-primary hover:bg-slate-100 h-16 rounded-[2rem] font-black text-xl shadow-xl border-2 border-primary/10">
+        <Button onClick={handleDownloadReport} className="w-full bg-card text-primary hover:bg-muted h-16 rounded-[2rem] font-black text-xl shadow-xl border-2 border-primary/10">
           Generate Progress Report (PDF)
         </Button>
 
-        <Card className="border-none shadow-2xl bg-white rounded-[2.5rem] overflow-hidden">
-          <CardHeader className="bg-slate-50/50 border-b p-8 text-center">
+        <Card className="border-none shadow-2xl bg-card rounded-[2.5rem] overflow-hidden">
+          <CardHeader className="bg-muted/30 border-b p-8 text-center">
             <CardTitle className="text-2xl font-black flex items-center justify-center gap-2">
               <Award className="w-8 h-8 text-primary" /> Achievement Gallery
             </CardTitle>
@@ -465,8 +496,8 @@ function ProfileView({ stats, onBack, brainAge }: { stats: UserStats, onBack: ()
 
 function StatBox({ label, value }: { label: string, value: string }) {
   return (
-    <div className="bg-white p-6 rounded-[2rem] shadow-xl border border-slate-100 flex flex-col items-center justify-center text-center">
-      <span className="text-[10px] uppercase font-black text-slate-400 tracking-widest mb-1">{label}</span>
+    <div className="bg-card p-6 rounded-[2rem] shadow-xl border border-border/50 flex flex-col items-center justify-center text-center">
+      <span className="text-[10px] uppercase font-black text-muted-foreground tracking-widest mb-1">{label}</span>
       <span className="text-2xl font-black text-primary">{value}</span>
     </div>
   );
@@ -474,12 +505,12 @@ function StatBox({ label, value }: { label: string, value: string }) {
 
 function AchievementItem({ title, desc, unlocked }: any) {
   return (
-    <div className={`flex items-center gap-4 p-5 rounded-3xl transition-all border ${unlocked ? 'bg-white border-primary/10 shadow-md' : 'opacity-40 grayscale bg-slate-100 border-transparent'}`}>
-      <div className={`p-4 rounded-2xl ${unlocked ? 'bg-primary/5 text-primary' : 'bg-slate-200 text-slate-400'}`}>
+    <div className={`flex items-center gap-4 p-5 rounded-3xl transition-all border ${unlocked ? 'bg-card border-primary/10 shadow-md' : 'opacity-40 grayscale bg-muted/20 border-transparent'}`}>
+      <div className={`p-4 rounded-2xl ${unlocked ? 'bg-primary/5 text-primary' : 'bg-muted text-muted-foreground'}`}>
         <Award className="w-8 h-8" />
       </div>
       <div className="flex-1">
-        <p className="text-base font-black leading-none text-slate-800">{title}</p>
+        <p className="text-base font-black leading-none text-foreground">{title}</p>
         <p className="text-xs text-muted-foreground mt-2 font-bold uppercase tracking-tight">{desc}</p>
       </div>
       {unlocked && <CheckCircle2 className="w-6 h-6 text-accent" />}
