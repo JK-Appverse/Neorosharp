@@ -71,7 +71,7 @@ export default function StroopTest({ onBack }: { onBack: () => void }) {
           <div className="mx-auto bg-primary/10 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-4">
             <Brain className="text-primary w-8 h-8" />
           </div>
-          <CardTitle className="text-3xl font-bold font-headline">Stroop Test</CardTitle>
+          <CardTitle className="text-3xl font-bold font-headline">Ink Color Test</CardTitle>
           <CardDescription className="text-lg">Train your selective attention. Identify the <b>ink color</b>, not the word itself.</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center gap-6">
@@ -129,7 +129,7 @@ export default function StroopTest({ onBack }: { onBack: () => void }) {
           <Button
             key={c.name}
             variant="outline"
-            className="h-20 text-xl font-bold border-2 hover:bg-slate-900 hover:text-white transition-colors"
+            className="h-20 text-xl font-bold border-2 hover:bg-slate-900 hover:text-white hover:text-white transition-colors"
             onClick={() => handleChoice(c.value)}
           >
             {c.name}

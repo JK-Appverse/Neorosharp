@@ -85,7 +85,7 @@ export default function NumberPyramid({ onBack }: { onBack: () => void }) {
           <div className="mx-auto bg-indigo-100 p-5 rounded-3xl w-20 h-20 flex items-center justify-center mb-6">
             <Triangle className="text-indigo-600 w-10 h-10" />
           </div>
-          <CardTitle className="text-3xl font-black">Number Pyramid</CardTitle>
+          <CardTitle className="text-3xl font-black">Math Pyramid</CardTitle>
           <CardDescription className="text-base font-medium px-4">
             Each number is the sum of the two numbers directly below it. Find the missing value!
           </CardDescription>

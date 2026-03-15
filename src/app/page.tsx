@@ -214,7 +214,7 @@ export default function Home() {
                   onClick={() => setActiveView(game)}
                   className="flex-1 rounded-2xl border-amber-100 dark:border-amber-900/50 hover:border-amber-300 hover:bg-amber-50 dark:hover:bg-amber-900/20 h-16 flex flex-col items-center justify-center"
                 >
-                  <span className="text-[10px] font-black uppercase text-amber-600">{game}</span>
+                  <span className="text-[10px] font-black uppercase text-amber-600">{game === 'stroop' ? 'Color-Word' : game}</span>
                   <span className="text-xs font-bold text-slate-400">Bonus</span>
                 </Button>
               ))}
@@ -231,16 +231,16 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             <GameCard 
-              title="Word Chain" 
-              desc="Sequential Recall" 
+              title="Word Sequence Chain" 
+              desc="Cumulative Memory" 
               icon={<LinkIcon className="w-6 h-6" />}
               highScore={stats.highScores.wordChain}
               color="bg-emerald-600"
               onClick={() => setActiveView('wordChain')}
             />
             <GameCard 
-              title="Image Puzzle" 
-              desc="Visual Reassembly" 
+              title="Picture Slide Puzzle" 
+              desc="Spatial Reassembly" 
               icon={<ImageIcon className="w-6 h-6" />}
               highScore={stats.highScores.imagePuzzle}
               unit="s"
@@ -248,15 +248,15 @@ export default function Home() {
               onClick={() => setActiveView('imagePuzzle')}
             />
             <GameCard 
-              title="Logic Traps" 
-              desc="Focus & Deduction" 
+              title="Tricky Riddles" 
+              desc="Logic & Focus" 
               icon={<AlertTriangle className="w-6 h-6" />}
               highScore={stats.highScores.logicTraps}
               color="bg-indigo-600"
               onClick={() => setActiveView('logicTraps')}
             />
             <GameCard 
-              title="Speed Match" 
+              title="Shape Recall" 
               desc="Working Memory" 
               icon={<Sparkles className="w-6 h-6" />}
               highScore={stats.highScores.speedMatch}
@@ -264,48 +264,48 @@ export default function Home() {
               onClick={() => setActiveView('speedMatch')}
             />
             <GameCard 
-              title="Emoji Hunt" 
-              desc="Visual Search" 
+              title="Emoji Search" 
+              desc="Visual Identification" 
               icon={<Search className="w-6 h-6" />}
               highScore={stats.highScores.emojiHunt}
               color="bg-amber-600"
               onClick={() => setActiveView('emojiHunt')}
             />
             <GameCard 
-              title="Word Scramble" 
-              desc="Language Processing" 
+              title="Unscramble Words" 
+              desc="Language Logic" 
               icon={<Type className="w-6 h-6" />}
               highScore={stats.highScores.wordScramble}
               color="bg-pink-600"
               onClick={() => setActiveView('wordScramble')}
             />
             <GameCard 
-              title="Number Pyramid" 
-              desc="Mental Addition" 
+              title="Math Pyramid" 
+              desc="Sequential Sums" 
               icon={<Triangle className="w-6 h-6" />}
               highScore={stats.highScores.numberPyramid}
               color="bg-indigo-600"
               onClick={() => setActiveView('numberPyramid')}
             />
             <GameCard 
-              title="Vowel Hunter" 
-              desc="Speed Selection" 
+              title="Catch the Vowels" 
+              desc="Fast Perception" 
               icon={<MousePointer2 className="w-6 h-6" />}
               highScore={stats.highScores.vowelHunter}
               color="bg-amber-600"
               onClick={() => setActiveView('vowelHunter')}
             />
             <GameCard 
-              title="Digit Span" 
-              desc="Sequence Memory" 
+              title="Number Sequence" 
+              desc="Working Memory" 
               icon={<Hash className="w-6 h-6" />}
               highScore={stats.highScores.digitSpan}
               color="bg-purple-500"
               onClick={() => setActiveView('digitSpan')}
             />
             <GameCard 
-              title="Reaction Time" 
-              desc="Neural Reflexes" 
+              title="Reflex Test" 
+              desc="Reaction Time" 
               icon={<Timer className="w-6 h-6" />}
               highScore={stats.highScores.reactionTime}
               unit="ms"
@@ -313,23 +313,23 @@ export default function Home() {
               onClick={() => setActiveView('reactionTime')}
             />
             <GameCard 
-              title="Reverse Word" 
-              desc="Language Logic" 
+              title="Backward Words" 
+              desc="Reverse Language" 
               icon={<RefreshCw className="w-6 h-6" />}
               highScore={stats.highScores.reverseWord}
               color="bg-pink-500"
               onClick={() => setActiveView('reverseWord')}
             />
             <GameCard 
-              title="Inhibition" 
-              desc="Directional Swipe" 
+              title="Arrow Rule Test" 
+              desc="Response Inhibition" 
               icon={<ArrowRightLeft className="w-6 h-6" />}
               highScore={stats.highScores.directionalSwipe}
               color="bg-teal-500"
               onClick={() => setActiveView('directionalSwipe')}
             />
             <GameCard 
-              title="Odd One Out" 
+              title="Spot the Odd One" 
               desc="Visual Perception" 
               icon={<Search className="w-6 h-6" />}
               highScore={stats.highScores.oddOneOut}
@@ -337,20 +337,37 @@ export default function Home() {
               onClick={() => setActiveView('oddOneOut')}
             />
             <GameCard 
-              title="Stroop Test" 
-              desc="Focus & Attention" 
+              title="Ink Color Test" 
+              desc="Selective Attention" 
               icon={<Target className="w-6 h-6" />}
               highScore={stats.highScores.stroop}
               color="bg-red-500"
               onClick={() => setActiveView('stroop')}
             />
             <GameCard 
-              title="Math Rush" 
-              desc="Speed & Logic" 
+              title="Speed Math" 
+              desc="Mental Arithmetic" 
               icon={<Zap className="w-6 h-6" />}
               highScore={stats.highScores.math}
               color="bg-yellow-500"
               onClick={() => setActiveView('math')}
+            />
+            <GameCard 
+              title="Memory Grid" 
+              desc="Spatial Recall" 
+              icon={<Eye className="w-6 h-6" />}
+              highScore={stats.highScores.pattern}
+              color="bg-blue-500"
+              onClick={() => setActiveView('pattern')}
+            />
+            <GameCard 
+              title="Number Finder" 
+              desc="Peripheral Vision" 
+              icon={<Grid className="w-6 h-6" />}
+              highScore={stats.highScores.schulte}
+              unit="s"
+              color="bg-slate-500"
+              onClick={() => setActiveView('schulte')}
             />
           </div>
         </section>

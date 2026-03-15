@@ -76,7 +76,7 @@ export default function VowelHunter({ onBack }: { onBack: () => void }) {
           <div className="mx-auto bg-amber-100 p-5 rounded-3xl w-20 h-20 flex items-center justify-center mb-6">
             <MousePointer2 className="text-amber-600 w-10 h-10" />
           </div>
-          <CardTitle className="text-3xl font-black">Vowel Hunter</CardTitle>
+          <CardTitle className="text-3xl font-black">Catch the Vowels</CardTitle>
           <CardDescription className="text-base font-medium px-4">
             Characters will fall from the top. Tap ONLY the vowels (A, E, I, O, U) before they disappear!
           </CardDescription>

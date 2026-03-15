@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { updateHighScores, addPlayTime } from '@/lib/storage';
@@ -95,7 +95,7 @@ export default function WordChain({ onBack }: { onBack: () => void }) {
           <div className="mx-auto bg-emerald-100 dark:bg-emerald-900/40 p-5 rounded-3xl w-20 h-20 flex items-center justify-center mb-6">
             <LinkIcon className="text-emerald-600 dark:text-emerald-400 w-10 h-10" />
           </div>
-          <CardTitle className="text-3xl font-black text-slate-800 dark:text-slate-100">Word Chain</CardTitle>
+          <CardTitle className="text-3xl font-black text-slate-800 dark:text-slate-100">Word Sequence Chain</CardTitle>
           <CardDescription className="text-base font-medium px-4 text-slate-600 dark:text-slate-400">
             Memorize the sequence of words. Then, tap them in the exact order they appeared.
           </CardDescription>
@@ -196,7 +196,7 @@ export default function WordChain({ onBack }: { onBack: () => void }) {
                   key={idx}
                   variant="outline"
                   onClick={() => handleWordSelect(word)}
-                  className="h-16 text-lg font-black rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-slate-900 dark:hover:text-slate-100 transition-all active:scale-95"
+                  className="h-16 text-lg font-black rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-slate-900 dark:hover:text-slate-100 hover:text-white transition-all active:scale-95"
                 >
                   {word}
                 </Button>

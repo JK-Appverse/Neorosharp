@@ -64,7 +64,7 @@ export default function DigitSpan({ onBack }: { onBack: () => void }) {
           <div className="mx-auto bg-purple-100 p-5 rounded-3xl w-20 h-20 flex items-center justify-center mb-6">
             <Hash className="text-purple-600 w-10 h-10" />
           </div>
-          <CardTitle className="text-3xl font-black text-slate-800">Digit Span</CardTitle>
+          <CardTitle className="text-3xl font-black text-slate-800">Number Sequence</CardTitle>
           <CardDescription className="text-base font-medium px-4">
             Memorize the sequence of numbers and type them back correctly. The sequence grows longer with each win.
           </CardDescription>

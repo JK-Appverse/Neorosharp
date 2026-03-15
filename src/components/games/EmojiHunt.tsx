@@ -76,7 +76,7 @@ export default function EmojiHunt({ onBack, isDaily }: { onBack: () => void, isD
           <div className="mx-auto bg-amber-100 p-5 rounded-3xl w-20 h-20 flex items-center justify-center mb-6">
             <Search className="text-amber-600 w-10 h-10" />
           </div>
-          <CardTitle className="text-3xl font-black">Emoji Hunt</CardTitle>
+          <CardTitle className="text-3xl font-black">Emoji Search</CardTitle>
           <CardDescription className="text-base font-medium px-4">
             Find the unique emoji in the grid as fast as you can!
           </CardDescription>

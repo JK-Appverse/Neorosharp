@@ -71,7 +71,7 @@ export default function SpeedMatch({ onBack, isDaily }: { onBack: () => void, is
           <div className="mx-auto bg-blue-100 p-5 rounded-3xl w-20 h-20 flex items-center justify-center mb-6">
             <Brain className="text-blue-600 w-10 h-10" />
           </div>
-          <CardTitle className="text-3xl font-black">Speed Match</CardTitle>
+          <CardTitle className="text-3xl font-black">Shape Recall</CardTitle>
           <CardDescription className="text-base font-medium px-4">
             Is the current shape identical to the previous one?
           </CardDescription>
@@ -118,13 +118,13 @@ export default function SpeedMatch({ onBack, isDaily }: { onBack: () => void, is
         
         <div className="grid grid-cols-2 gap-4 w-full">
           <Button 
-            className="h-24 text-xl font-black rounded-2xl bg-red-500 hover:bg-red-600"
+            className="h-24 text-xl font-black rounded-2xl bg-red-500 hover:bg-red-600 hover:text-white"
             onClick={() => handleChoice(false)}
           >
             <X className="mr-2" /> NO
           </Button>
           <Button 
-            className="h-24 text-xl font-black rounded-2xl bg-emerald-500 hover:bg-emerald-600"
+            className="h-24 text-xl font-black rounded-2xl bg-emerald-500 hover:bg-emerald-600 hover:text-white"
             onClick={() => handleChoice(true)}
           >
             <Check className="mr-2" /> YES

@@ -79,7 +79,7 @@ export default function MathRush({ onBack }: { onBack: () => void }) {
           <div className="mx-auto bg-primary/10 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-4">
             <Zap className="text-primary w-8 h-8" />
           </div>
-          <CardTitle className="text-3xl font-bold">Math Rush</CardTitle>
+          <CardTitle className="text-3xl font-bold">Speed Math</CardTitle>
           <CardDescription className="text-lg">Boost your calculation speed. You have 3 seconds per problem.</CardDescription>
         </CardHeader>
         <CardContent>

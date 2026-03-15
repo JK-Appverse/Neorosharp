@@ -68,7 +68,7 @@ export default function WordScramble({ onBack, isDaily }: { onBack: () => void, 
           <div className="mx-auto bg-pink-100 p-5 rounded-3xl w-20 h-20 flex items-center justify-center mb-6">
             <Type className="text-pink-600 w-10 h-10" />
           </div>
-          <CardTitle className="text-3xl font-black">Word Scramble</CardTitle>
+          <CardTitle className="text-3xl font-black">Unscramble Words</CardTitle>
           <CardDescription className="text-base font-medium px-4">
             Unscramble the letters to find the hidden brain-themed word!
           </CardDescription>

@@ -72,7 +72,7 @@ export default function LogicTraps({ onBack }: { onBack: () => void }) {
           <div className="mx-auto bg-indigo-100 dark:bg-indigo-900/40 p-5 rounded-3xl w-20 h-20 flex items-center justify-center mb-6">
             <Brain className="text-indigo-600 dark:text-indigo-400 w-10 h-10" />
           </div>
-          <CardTitle className="text-3xl font-black text-slate-800 dark:text-slate-100">Logic Traps</CardTitle>
+          <CardTitle className="text-3xl font-black text-slate-800 dark:text-slate-100">Tricky Riddles</CardTitle>
           <CardDescription className="text-base font-medium px-4 text-slate-600 dark:text-slate-400">
             Tricky puzzles designed to test your reasoning. Focus is key!
           </CardDescription>
@@ -128,7 +128,7 @@ export default function LogicTraps({ onBack }: { onBack: () => void }) {
                 <Button 
                   key={i} 
                   variant="outline" 
-                  className="h-16 rounded-2xl text-lg font-bold border-2 border-slate-100 dark:border-slate-800 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-100 transition-all hover:border-indigo-600 group"
+                  className="h-16 rounded-2xl text-lg font-bold border-2 border-slate-100 dark:border-slate-800 hover:bg-slate-100 hover:text-slate-900 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-100 transition-all hover:border-indigo-600 group"
                   onClick={() => handleChoice(opt)}
                 >
                   <span className="group-hover:text-slate-900 dark:group-hover:text-slate-100">{opt}</span>
@@ -137,14 +137,14 @@ export default function LogicTraps({ onBack }: { onBack: () => void }) {
             </div>
           </>
         ) : (
-          <div className="animate-in fade-in zoom-in duration-300">
+          <div className="animate-in fade-in zoom-in duration-300 w-full">
             <div className={`p-4 rounded-full mx-auto w-16 h-16 flex items-center justify-center mb-6 ${lastCorrect ? 'bg-emerald-100 text-emerald-600' : 'bg-red-100 text-red-600'}`}>
               {lastCorrect ? <Trophy className="w-8 h-8" /> : <HelpCircle className="w-8 h-8" />}
             </div>
             <h3 className={`text-2xl font-black mb-4 ${lastCorrect ? 'text-emerald-600' : 'text-red-600'}`}>
               {lastCorrect ? 'Brilliant!' : 'Trapped!'}
             </h3>
-            <p className="text-lg font-medium text-slate-600 dark:text-slate-300 mb-8 max-w-md">
+            <p className="text-lg font-medium text-slate-600 dark:text-slate-300 mb-8 max-w-md mx-auto">
               {current.explanation}
             </p>
             <Button size="lg" className="px-10 py-7 rounded-2xl text-xl font-black bg-indigo-600 text-white" onClick={nextPuzzle}>

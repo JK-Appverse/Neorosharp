@@ -79,7 +79,7 @@ export default function DirectionalSwipe({ onBack }: { onBack: () => void }) {
           <div className="mx-auto bg-teal-100 p-5 rounded-3xl w-20 h-20 flex items-center justify-center mb-6">
             <ArrowRight className="text-teal-600 w-10 h-10" />
           </div>
-          <CardTitle className="text-3xl font-black">Inhibition Logic</CardTitle>
+          <CardTitle className="text-3xl font-black">Arrow Rule Test</CardTitle>
           <CardDescription className="text-base font-medium px-4 leading-relaxed">
             Follow the rules carefully:<br/>
             <span className="text-blue-600 font-bold">Blue Arrow</span>: Tap the SAME direction.<br/>

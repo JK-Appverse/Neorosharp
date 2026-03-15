@@ -64,7 +64,7 @@ export default function SchulteTable({ onBack }: { onBack: () => void }) {
           <div className="mx-auto bg-primary/10 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-4">
             <Grid className="text-primary w-8 h-8" />
           </div>
-          <CardTitle className="text-3xl font-bold">Schulte Table</CardTitle>
+          <CardTitle className="text-3xl font-bold">Number Finder</CardTitle>
           <CardDescription className="text-lg">Train peripheral vision and processing speed. Tap numbers 1 to 25 in order as fast as possible.</CardDescription>
         </CardHeader>
         <CardContent>

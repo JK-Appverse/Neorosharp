@@ -107,7 +107,7 @@ export default function ImagePuzzle({ onBack }: { onBack: () => void }) {
           <div className="mx-auto bg-cyan-100 dark:bg-cyan-900/40 p-5 rounded-3xl w-20 h-20 flex items-center justify-center mb-6">
             <ImageIcon className="text-cyan-600 dark:text-cyan-400 w-10 h-10" />
           </div>
-          <CardTitle className="text-3xl font-black text-slate-800 dark:text-slate-100">Image Puzzle</CardTitle>
+          <CardTitle className="text-3xl font-black text-slate-800 dark:text-slate-100">Picture Slide Puzzle</CardTitle>
           <CardDescription className="text-base font-medium px-4">
             Slide the pieces to reassemble the scrambled image. Challenge your spatial memory!
           </CardDescription>

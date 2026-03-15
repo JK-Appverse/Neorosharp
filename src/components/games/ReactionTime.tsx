@@ -56,7 +56,7 @@ export default function ReactionTime({ onBack }: { onBack: () => void }) {
           <div className="mx-auto bg-orange-100 p-5 rounded-3xl w-20 h-20 flex items-center justify-center mb-6">
             <Timer className="text-orange-600 w-10 h-10" />
           </div>
-          <CardTitle className="text-3xl font-black">Reaction Speed</CardTitle>
+          <CardTitle className="text-3xl font-black">Reflex Test</CardTitle>
           <CardDescription className="text-base font-medium px-4">
             Tap the screen as soon as it turns GREEN. Let's measure your neural response time!
           </CardDescription>

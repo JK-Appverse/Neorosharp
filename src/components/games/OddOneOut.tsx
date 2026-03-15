@@ -78,7 +78,7 @@ export default function OddOneOut({ onBack }: { onBack: () => void }) {
           <div className="mx-auto bg-emerald-100 p-5 rounded-3xl w-20 h-20 flex items-center justify-center mb-6">
             <Search className="text-emerald-600 w-10 h-10" />
           </div>
-          <CardTitle className="text-3xl font-black">Odd One Out</CardTitle>
+          <CardTitle className="text-3xl font-black">Spot the Odd One</CardTitle>
           <CardDescription className="text-base font-medium px-4">
             Find the symbol that is different from others. Be quick, the clock is ticking!
           </CardDescription>
@@ -130,7 +130,7 @@ export default function OddOneOut({ onBack }: { onBack: () => void }) {
           <button
             key={i}
             onClick={() => handleTileClick(i)}
-            className="aspect-square flex items-center justify-center text-4xl font-black rounded-2xl bg-slate-50 hover:bg-slate-900 hover:text-white transition-all active:scale-90 border border-transparent"
+            className="aspect-square flex items-center justify-center text-4xl font-black rounded-2xl bg-slate-50 hover:bg-slate-900 hover:text-white hover:text-white transition-all active:scale-90 border border-transparent"
           >
             {char}
           </button>
