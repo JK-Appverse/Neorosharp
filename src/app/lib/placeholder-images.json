@@ -12,6 +12,12 @@
       "description": "Minimalist focus icon",
       "imageUrl": "https://picsum.photos/seed/focus/400/400",
       "imageHint": "focus target"
+    },
+    {
+      "id": "puzzle-target",
+      "description": "Brain puzzle image",
+      "imageUrl": "https://picsum.photos/seed/neuropuzzle/600/600",
+      "imageHint": "brain puzzle"
     }
   ]
 }

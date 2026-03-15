@@ -1,15 +1,15 @@
 
 "use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { updateHighScores, addPlayTime } from '@/lib/storage';
 import { Image as ImageIcon, ArrowLeft, RefreshCw, Trophy, Clock, MoveHorizontal } from "lucide-react";
 import { playSound } from '@/lib/audio';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const GRID_SIZE = 3;
-const PUZZLE_IMAGE = "https://picsum.photos/seed/neuropuzzle/600/600";
 
 export default function ImagePuzzle({ onBack }: { onBack: () => void }) {
   const [gameState, setGameState] = useState<'idle' | 'playing' | 'ended'>('idle');
@@ -18,25 +18,31 @@ export default function ImagePuzzle({ onBack }: { onBack: () => void }) {
   const [timer, setTimer] = useState(0);
   const [startTime, setStartTime] = useState(0);
 
+  const puzzleImage = useMemo(() => {
+    return PlaceHolderImages.find(img => img.id === 'puzzle-target')?.imageUrl || "https://picsum.photos/seed/neuropuzzle/600/600";
+  }, []);
+
   const initPuzzle = useCallback(() => {
     // Correct order is 0, 1, 2, 3, 4, 5, 6, 7, 8 (where 8 is empty)
     const initialTiles = Array.from({ length: GRID_SIZE * GRID_SIZE }, (_, i) => i);
     
-    // Scramble tiles
+    // Scramble tiles with a solvable sequence of moves
     let scrambled = [...initialTiles];
+    let emptyIdx = 8;
+    
     for (let i = 0; i < 200; i++) {
-      const emptyIdx = scrambled.indexOf(8);
       const possibleMoves: number[] = [];
       const row = Math.floor(emptyIdx / GRID_SIZE);
       const col = emptyIdx % GRID_SIZE;
 
-      if (row > 0) possibleMoves.push(emptyIdx - GRID_SIZE); // Top
-      if (row < GRID_SIZE - 1) possibleMoves.push(emptyIdx + GRID_SIZE); // Bottom
-      if (col > 0) possibleMoves.push(emptyIdx - 1); // Left
-      if (col < GRID_SIZE - 1) possibleMoves.push(emptyIdx + 1); // Right
+      if (row > 0) possibleMoves.push(emptyIdx - GRID_SIZE);
+      if (row < GRID_SIZE - 1) possibleMoves.push(emptyIdx + GRID_SIZE);
+      if (col > 0) possibleMoves.push(emptyIdx - 1);
+      if (col < GRID_SIZE - 1) possibleMoves.push(emptyIdx + 1);
 
       const move = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
       [scrambled[emptyIdx], scrambled[move]] = [scrambled[move], scrambled[emptyIdx]];
+      emptyIdx = move;
     }
 
     setTiles(scrambled);
@@ -52,10 +58,11 @@ export default function ImagePuzzle({ onBack }: { onBack: () => void }) {
   };
 
   useEffect(() => {
+    let interval: NodeJS.Timeout;
     if (gameState === 'playing') {
-      const interval = setInterval(() => setTimer(prev => prev + 1), 1000);
-      return () => clearInterval(interval);
+      interval = setInterval(() => setTimer(prev => prev + 1), 1000);
     }
+    return () => clearInterval(interval);
   }, [gameState]);
 
   const handleTileClick = (index: number) => {
@@ -107,7 +114,12 @@ export default function ImagePuzzle({ onBack }: { onBack: () => void }) {
         </CardHeader>
         <CardContent className="pb-10 pt-4 px-8">
           <div className="relative aspect-square w-full max-w-[200px] mx-auto mb-8 rounded-2xl overflow-hidden border-4 border-slate-100 dark:border-slate-800">
-             <img src={PUZZLE_IMAGE} alt="Target" className="object-cover w-full h-full opacity-50" />
+             <img 
+               src={puzzleImage} 
+               alt="Target" 
+               className="object-cover w-full h-full opacity-50" 
+               data-ai-hint="brain puzzle"
+             />
              <div className="absolute inset-0 flex items-center justify-center">
                 <span className="bg-white/80 dark:bg-slate-900/80 px-4 py-1 rounded-full text-xs font-black uppercase tracking-widest shadow-sm">Target View</span>
              </div>
@@ -124,7 +136,7 @@ export default function ImagePuzzle({ onBack }: { onBack: () => void }) {
     return (
       <Card className="w-full border-none shadow-2xl bg-white dark:bg-slate-900 rounded-3xl overflow-hidden text-center p-10">
         <div className="relative aspect-square w-48 mx-auto mb-6 rounded-3xl overflow-hidden shadow-2xl border-4 border-emerald-500">
-            <img src={PUZZLE_IMAGE} alt="Solved" className="object-cover w-full h-full" />
+            <img src={puzzleImage} alt="Solved" className="object-cover w-full h-full" />
         </div>
         <h2 className="text-3xl font-black mb-2 text-slate-800 dark:text-slate-100">Picture Perfect!</h2>
         <div className="flex justify-center gap-8 mb-8">
@@ -175,18 +187,13 @@ export default function ImagePuzzle({ onBack }: { onBack: () => void }) {
                         ? 'bg-slate-100 dark:bg-slate-800 border-transparent' 
                         : 'border-white/20 shadow-sm active:scale-95'
                     }`}
-                >
-                    {tile !== 8 && (
-                        <div 
-                            className="absolute w-[300%] h-[300%]"
-                            style={{
-                                backgroundImage: `url(${PUZZLE_IMAGE})`,
-                                backgroundSize: '100% 100%',
-                                backgroundPosition: `${(tile % 3) * 50}% ${Math.floor(tile / 3) * 50}%`
-                            }}
-                        />
-                    )}
-                </div>
+                    style={tile !== 8 ? {
+                        backgroundImage: `url("${puzzleImage}")`,
+                        backgroundSize: '300% 300%',
+                        backgroundPosition: `${(tile % 3) * 50}% ${Math.floor(tile / 3) * 50}%`,
+                        backgroundRepeat: 'no-repeat'
+                    } : {}}
+                />
             ))}
         </div>
       </div>
