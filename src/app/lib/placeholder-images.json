@@ -1,0 +1,17 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "hero-brain",
+      "description": "Abstract glowing brain representation",
+      "imageUrl": "https://picsum.photos/seed/brain1/1200/600",
+      "imageHint": "brain neural"
+    },
+    {
+      "id": "focus-module",
+      "description": "Minimalist focus icon",
+      "imageUrl": "https://picsum.photos/seed/focus/400/400",
+      "imageHint": "focus target"
+    }
+  ]
+}
