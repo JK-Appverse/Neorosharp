@@ -10,7 +10,7 @@ import {
   Brain, Zap, Eye, Grid, TrendingUp, Award, ChevronRight, Target, Hash, 
   RefreshCw, Search, Timer, ArrowRightLeft, User, ArrowLeft, CheckCircle2, 
   Save, Triangle, MousePointer2, Settings, BarChart3, Clock, Type, Swords, Sparkles,
-  Sun, Moon
+  Sun, Moon, AlertTriangle
 } from "lucide-react";
 
 import StroopTest from '@/components/games/StroopTest';
@@ -27,11 +27,12 @@ import VowelHunter from '@/components/games/VowelHunter';
 import SpeedMatch from '@/components/games/SpeedMatch';
 import EmojiHunt from '@/components/games/EmojiHunt';
 import WordScramble from '@/components/games/WordScramble';
+import LogicTraps from '@/components/games/LogicTraps';
 import VersusMode from '@/components/games/VersusMode';
 
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-type ActiveView = 'none' | 'stroop' | 'math' | 'pattern' | 'schulte' | 'digitSpan' | 'reverseWord' | 'oddOneOut' | 'reactionTime' | 'directionalSwipe' | 'numberPyramid' | 'vowelHunter' | 'speedMatch' | 'emojiHunt' | 'wordScramble' | 'profile' | 'versus';
+type ActiveView = 'none' | 'stroop' | 'math' | 'pattern' | 'schulte' | 'digitSpan' | 'reverseWord' | 'oddOneOut' | 'reactionTime' | 'directionalSwipe' | 'numberPyramid' | 'vowelHunter' | 'speedMatch' | 'emojiHunt' | 'wordScramble' | 'logicTraps' | 'profile' | 'versus';
 
 export default function Home() {
   const [activeView, setActiveView] = useState<ActiveView>('none');
@@ -67,7 +68,7 @@ export default function Home() {
     // Deterministic daily challenge based on date
     const today = new Date().toISOString().split('T')[0];
     const hash = today.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    const games: ActiveView[] = ['stroop', 'math', 'pattern', 'schulte', 'digitSpan', 'reverseWord', 'oddOneOut', 'reactionTime', 'directionalSwipe', 'numberPyramid', 'vowelHunter', 'speedMatch', 'emojiHunt', 'wordScramble'];
+    const games: ActiveView[] = ['stroop', 'math', 'pattern', 'schulte', 'digitSpan', 'reverseWord', 'oddOneOut', 'reactionTime', 'directionalSwipe', 'numberPyramid', 'vowelHunter', 'speedMatch', 'emojiHunt', 'wordScramble', 'logicTraps'];
     return [
       games[hash % games.length],
       games[(hash + 3) % games.length],
@@ -120,6 +121,7 @@ export default function Home() {
           {activeView === 'speedMatch' && <SpeedMatch onBack={() => setActiveView('none')} isDaily={isDaily} />}
           {activeView === 'emojiHunt' && <EmojiHunt onBack={() => setActiveView('none')} isDaily={isDaily} />}
           {activeView === 'wordScramble' && <WordScramble onBack={() => setActiveView('none')} isDaily={isDaily} />}
+          {activeView === 'logicTraps' && <LogicTraps onBack={() => setActiveView('none')} />}
         </div>
       </div>
     );
@@ -225,6 +227,14 @@ export default function Home() {
             <span className="text-xs text-muted-foreground font-black uppercase tracking-widest mt-1">Advanced Exercises Available</span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <GameCard 
+              title="Logic Traps" 
+              desc="Focus & Deduction" 
+              icon={<AlertTriangle className="w-6 h-6" />}
+              highScore={stats.highScores.logicTraps}
+              color="bg-indigo-600"
+              onClick={() => setActiveView('logicTraps')}
+            />
             <GameCard 
               title="Speed Match" 
               desc="Working Memory" 
@@ -487,6 +497,7 @@ function ProfileView({ stats, onBack, brainAge }: { stats: UserStats, onBack: ()
             <AchievementItem title="Focused" desc="Math Rush > 100" unlocked={stats.highScores.math >= 100} />
             <AchievementItem title="Eagle Eye" desc="Odd One Out > 200" unlocked={stats.highScores.oddOneOut >= 200} />
             <AchievementItem title="Pyramid King" desc="Number Pyramid > 300" unlocked={stats.highScores.numberPyramid >= 300} />
+            <AchievementItem title="Logic Master" desc="Escaped all Logic Traps" unlocked={stats.highScores.logicTraps > 500} />
           </CardContent>
         </Card>
       </div>

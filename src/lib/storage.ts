@@ -18,10 +18,10 @@ export interface UserStats {
     directionalSwipe: number;
     numberPyramid: number;
     vowelHunter: number;
-    // New Advanced Exercises
     speedMatch: number;
     emojiHunt: number;
     wordScramble: number;
+    logicTraps: number;
     colorChaos: number;
     missingLink: number;
     rotationStation: number;
@@ -60,6 +60,7 @@ const DEFAULT_STATS: UserStats = {
     speedMatch: 0,
     emojiHunt: 0,
     wordScramble: 0,
+    logicTraps: 0,
     colorChaos: 0,
     missingLink: 0,
     rotationStation: 0,
