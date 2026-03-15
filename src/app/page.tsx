@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -124,11 +123,11 @@ export default function Home() {
 
       <main className="container mx-auto px-4 -mt-12 space-y-12 max-w-6xl">
         <section>
-          <div className="flex items-center justify-between mb-6 px-2">
-            <h3 className="text-xl font-bold flex items-center gap-2">
-              <Target className="w-6 h-6 text-primary" /> Training Modules
+          <div className="flex flex-col items-center justify-center mb-10 px-2 -mt-6">
+            <h3 className="text-2xl font-black flex items-center gap-2 text-slate-800">
+              <Target className="w-7 h-7 text-primary" /> Training Modules
             </h3>
-            <span className="text-sm text-muted-foreground font-semibold">9 Exercises Available</span>
+            <span className="text-xs text-muted-foreground font-black uppercase tracking-widest mt-1">9 Exercises Available</span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             <GameCard 
