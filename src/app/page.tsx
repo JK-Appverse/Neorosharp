@@ -10,7 +10,7 @@ import {
   Brain, Zap, Eye, Grid, TrendingUp, Award, ChevronRight, Target, Hash, 
   RefreshCw, Search, Timer, ArrowRightLeft, User, ArrowLeft, CheckCircle2, 
   Save, Triangle, MousePointer2, Settings, BarChart3, Clock, Type, Swords, Sparkles,
-  Sun, Moon, AlertTriangle, Image as ImageIcon, Link as LinkIcon
+  Sun, Moon, AlertTriangle, Image as ImageIcon, Link as LinkIcon, Info
 } from "lucide-react";
 
 import StroopTest from '@/components/games/StroopTest';
@@ -504,7 +504,10 @@ function ProfileView({ stats, onBack, brainAge }: { stats: UserStats, onBack: ()
                   </Button>
                 </div>
               )}
-              <p className="text-primary-foreground/70 text-lg mt-2 font-black uppercase tracking-widest">Brain Age: {brainAge} Years</p>
+              <div className="flex items-center gap-2 justify-center md:justify-start mt-2">
+                <p className="text-primary-foreground/70 text-lg font-black uppercase tracking-widest">Brain Age: {brainAge} Years</p>
+                <Info className="w-4 h-4 text-primary-foreground/40" />
+              </div>
             </div>
           </div>
         </div>
@@ -517,6 +520,20 @@ function ProfileView({ stats, onBack, brainAge }: { stats: UserStats, onBack: ()
           <StatBox label="Daily Goal" value={`${goal} min`} />
           <StatBox label="Mind Level" value={brainAge < 25 ? 'Genius' : brainAge < 35 ? 'Sharp' : 'Learning'} />
         </div>
+
+        <Card className="border-none shadow-xl bg-primary/5 dark:bg-primary/10 rounded-[2rem] p-6 border border-primary/10">
+          <div className="flex gap-4 items-start">
+            <div className="bg-primary p-3 rounded-2xl text-white">
+              <Brain className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="font-black text-lg text-primary mb-1">What is Brain Age?</h4>
+              <p className="text-sm text-muted-foreground font-medium leading-relaxed">
+                Brain Age is a benchmark of your mental sharpness. It estimates how your cognitive speed, memory, and logic compare to baseline performance. A lower age indicates a more "fit" and agile mind. Keep training to stay sharp!
+              </p>
+            </div>
+          </div>
+        </Card>
 
         <Button onClick={handleDownloadReport} className="w-full bg-card text-primary hover:bg-muted h-16 rounded-[2rem] font-black text-xl shadow-xl border-2 border-primary/10">
           Generate Progress Report (PDF)
