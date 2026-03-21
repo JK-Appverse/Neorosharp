@@ -142,7 +142,7 @@ export default function Home() {
     const chartData = stats.history.slice(-7);
 
     return (
-      <div className="min-h-screen pb-24 bg-background">
+      <div className="min-h-screen pb-32 bg-background">
         <header className="bg-primary pt-10 pb-16 px-4 text-white relative">
           <div className="container mx-auto max-w-6xl">
             <div className="flex items-center justify-between mb-8">
@@ -182,7 +182,7 @@ export default function Home() {
         </header>
 
         <main className="container mx-auto px-4 mt-6 space-y-6 max-w-6xl">
-          {/* Ad 1 */}
+          {/* Ad 1 - Top of Main Content */}
           <AdBanner />
 
           {/* Daily Bonus Section */}
@@ -206,7 +206,7 @@ export default function Home() {
             </div>
           </Card>
 
-          {/* Ad 2 */}
+          {/* Ad 2 - After Bonus */}
           <AdBanner />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -242,7 +242,7 @@ export default function Home() {
             </Card>
           </div>
 
-          {/* Ad 3 */}
+          {/* Ad 3 - Before Training Modules */}
           <AdBanner />
 
           <section>
@@ -395,7 +395,7 @@ export default function Home() {
             </div>
           </section>
 
-          {/* Ad 4 */}
+          {/* Ad 4 - Between Modules and Analytics */}
           <AdBanner />
 
           <Card className="border-none shadow-lg bg-card overflow-hidden rounded-[2rem]">
@@ -433,8 +433,13 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          {/* Ad 5 */}
+          {/* Ad 5 - After Analytics */}
           <AdBanner />
+          
+          {/* Ad 6 - Very Bottom of Main Section */}
+          <div className="pt-4">
+             <AdBanner />
+          </div>
         </main>
         
         {/* Mobile Bottom Navigation */}
@@ -519,7 +524,7 @@ function ProfileView({ stats, onBack, brainAge }: { stats: UserStats, onBack: ()
   };
 
   return (
-    <div className="min-h-screen bg-background pb-24 md:pb-12">
+    <div className="min-h-screen bg-background pb-32 md:pb-12">
       <div className="bg-primary pt-10 pb-24 px-4 text-white">
         <div className="container mx-auto max-w-4xl">
           <Button variant="ghost" size="sm" className="text-white hover:bg-white/10 mb-6 hidden md:flex" onClick={onBack}>
