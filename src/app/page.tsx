@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -12,6 +11,7 @@ import {
   Save, Triangle, MousePointer2, Settings, BarChart3, Clock, Type, Swords, Sparkles,
   Sun, Moon, AlertTriangle, Image as ImageIcon, Link as LinkIcon, Info, Home as HomeIcon
 } from "lucide-react";
+import Script from 'next/script';
 
 import StroopTest from '@/components/games/StroopTest';
 import MathRush from '@/components/games/MathRush';
@@ -45,7 +45,6 @@ export default function Home() {
   useEffect(() => {
     setStats(getStats());
     
-    // Initialize theme: force 'light' for first time users
     const savedTheme = localStorage.getItem('neurosharp_theme') as 'light' | 'dark';
     if (savedTheme) {
       setTheme(savedTheme);
@@ -115,7 +114,16 @@ export default function Home() {
       return (
         <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
           <div className="w-full max-w-2xl">
-            <AdBanner />
+            {/* Social Bar Script - Only loaded during exercise */}
+            <Script 
+              src="https://pl28953843.profitablecpmratenetwork.com/05/39/d8/0539d87c413445d27a41866f8c6871b6.js" 
+              strategy="afterInteractive"
+            />
+            {/* ONLY ONE AD PER EXERCISE */}
+            <div className="mb-4">
+              <AdBanner />
+            </div>
+            
             {activeView === 'stroop' && <StroopTest onBack={() => setActiveView('none')} />}
             {activeView === 'math' && <MathRush onBack={() => setActiveView('none')} />}
             {activeView === 'pattern' && <PatternRecall onBack={() => setActiveView('none')} />}
@@ -133,7 +141,6 @@ export default function Home() {
             {activeView === 'logicTraps' && <LogicTraps onBack={() => setActiveView('none')} />}
             {activeView === 'imagePuzzle' && <ImagePuzzle onBack={() => setActiveView('none')} />}
             {activeView === 'wordChain' && <WordChain onBack={() => setActiveView('none')} />}
-            <AdBanner />
           </div>
         </div>
       );
@@ -182,7 +189,7 @@ export default function Home() {
         </header>
 
         <main className="container mx-auto px-4 mt-6 space-y-6 max-w-6xl">
-          {/* Ad 1 - Top of Main Content */}
+          {/* Dashboard Ad 1 */}
           <AdBanner />
 
           {/* Daily Bonus Section */}
@@ -205,9 +212,6 @@ export default function Home() {
               </div>
             </div>
           </Card>
-
-          {/* Ad 2 - After Bonus */}
-          <AdBanner />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Card className="rounded-[2rem] border-none shadow-lg bg-card overflow-hidden p-5">
@@ -242,7 +246,7 @@ export default function Home() {
             </Card>
           </div>
 
-          {/* Ad 3 - Before Training Modules */}
+          {/* Dashboard Ad 2 */}
           <AdBanner />
 
           <section>
@@ -395,7 +399,7 @@ export default function Home() {
             </div>
           </section>
 
-          {/* Ad 4 - Between Modules and Analytics */}
+          {/* Dashboard Ad 3 */}
           <AdBanner />
 
           <Card className="border-none shadow-lg bg-card overflow-hidden rounded-[2rem]">
@@ -433,16 +437,12 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          {/* Ad 5 - After Analytics */}
-          <AdBanner />
-          
-          {/* Ad 6 - Very Bottom of Main Section */}
+          {/* Dashboard Ad 4 - Final ad at bottom */}
           <div className="pt-4">
              <AdBanner />
           </div>
         </main>
         
-        {/* Mobile Bottom Navigation */}
         <div className="fixed bottom-0 left-0 right-0 bg-card/80 backdrop-blur-lg border-t z-50 px-6 py-3 flex items-center justify-between md:hidden">
           <button 
             onClick={() => setActiveView('none')}
@@ -619,7 +619,6 @@ function ProfileView({ stats, onBack, brainAge }: { stats: UserStats, onBack: ()
         </Card>
       </div>
 
-      {/* Mobile Bottom Navigation Duplicate for consistency */}
       <div className="fixed bottom-0 left-0 right-0 bg-card/80 backdrop-blur-lg border-t z-50 px-6 py-3 flex items-center justify-between md:hidden">
           <button 
             onClick={() => onBack()}

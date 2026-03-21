@@ -1,8 +1,6 @@
-
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
-import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: 'NeuroSharp | Cognitive Training',
@@ -24,11 +22,6 @@ export default function RootLayout({
       <body className="font-body antialiased bg-background text-foreground min-h-screen">
         {children}
         <Toaster />
-        {/* Ad script that opens on interaction/click */}
-        <Script 
-          src="https://pl28953843.profitablecpmratenetwork.com/05/39/d8/0539d87c413445d27a41866f8c6871b6.js" 
-          strategy="afterInteractive"
-        />
       </body>
     </html>
   );
