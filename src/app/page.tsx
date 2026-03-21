@@ -364,6 +364,27 @@ export default function Home() {
             </div>
           </section>
 
+          {/* Daily Bonus Section */}
+          <Card 
+            className="rounded-[2rem] border-none shadow-xl bg-gradient-to-br from-amber-400 to-orange-500 text-white overflow-hidden p-6 cursor-pointer hover:shadow-2xl transition-all active:scale-[0.98] group"
+            onClick={() => window.open('https://www.profitablecpmratenetwork.com/e0tukiugmg?key=aa66468bdeeef3c2c0bf8a69a613d8ae', '_blank')}
+          >
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="bg-white/20 p-3 rounded-2xl group-hover:bg-white/30 transition-colors">
+                  <Sparkles className="w-8 h-8 text-white animate-pulse" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black tracking-tight">Your Daily Bonus</h3>
+                  <p className="text-[10px] font-bold uppercase tracking-widest opacity-80">Click here to claim your reward</p>
+                </div>
+              </div>
+              <div className="bg-white/10 p-2 rounded-full">
+                <ChevronRight className="w-5 h-5" />
+              </div>
+            </div>
+          </Card>
+
           <Card className="border-none shadow-lg bg-card overflow-hidden rounded-[2rem]">
             <CardHeader className="pb-2 p-5">
               <CardTitle className="flex items-center gap-2 text-lg font-black">
