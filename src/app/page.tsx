@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -11,7 +12,6 @@ import {
   Save, Triangle, MousePointer2, Settings, BarChart3, Clock, Type, Swords, Sparkles,
   Sun, Moon, AlertTriangle, Image as ImageIcon, Link as LinkIcon, Info, Home as HomeIcon
 } from "lucide-react";
-import Script from 'next/script';
 
 import StroopTest from '@/components/games/StroopTest';
 import MathRush from '@/components/games/MathRush';
@@ -114,12 +114,7 @@ export default function Home() {
       return (
         <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
           <div className="w-full max-w-2xl">
-            {/* Social Bar Script - Only loaded during exercise */}
-            <Script 
-              src="https://pl28953843.profitablecpmratenetwork.com/05/39/d8/0539d87c413445d27a41866f8c6871b6.js" 
-              strategy="afterInteractive"
-            />
-            {/* ONLY ONE AD PER EXERCISE */}
+            {/* ONLY ONE AD PER EXERCISE TO PREVENT REPETITION */}
             <div className="mb-4">
               <AdBanner />
             </div>
@@ -189,7 +184,7 @@ export default function Home() {
         </header>
 
         <main className="container mx-auto px-4 mt-6 space-y-6 max-w-6xl">
-          {/* Dashboard Ad 1 */}
+          {/* Ad 1 - Dashboard Top */}
           <AdBanner />
 
           {/* Daily Bonus Section */}
@@ -246,7 +241,7 @@ export default function Home() {
             </Card>
           </div>
 
-          {/* Dashboard Ad 2 */}
+          {/* Ad 2 - Mid Dashboard */}
           <AdBanner />
 
           <section>
@@ -399,7 +394,7 @@ export default function Home() {
             </div>
           </section>
 
-          {/* Dashboard Ad 3 */}
+          {/* Ad 3 - Before Analytics */}
           <AdBanner />
 
           <Card className="border-none shadow-lg bg-card overflow-hidden rounded-[2rem]">
@@ -437,7 +432,7 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          {/* Dashboard Ad 4 - Final ad at bottom */}
+          {/* Ad 4 - Dashboard Bottom */}
           <div className="pt-4">
              <AdBanner />
           </div>
