@@ -43,7 +43,7 @@ export default function Home() {
   useEffect(() => {
     setStats(getStats());
     
-    // Initialize theme: check storage, if empty force 'light'
+    // Initialize theme: force 'light' for first time users
     const savedTheme = localStorage.getItem('neurosharp_theme') as 'light' | 'dark';
     if (savedTheme) {
       setTheme(savedTheme);
@@ -53,7 +53,6 @@ export default function Home() {
         document.documentElement.classList.remove('dark');
       }
     } else {
-      // Force 'light' for first time users
       setTheme('light');
       document.documentElement.classList.remove('dark');
       localStorage.setItem('neurosharp_theme', 'light');
@@ -72,7 +71,6 @@ export default function Home() {
   };
 
   const dailyChallengeGames = useMemo(() => {
-    // Deterministic daily challenge based on date
     const today = new Date().toISOString().split('T')[0];
     const hash = today.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     const games: ActiveView[] = ['stroop', 'math', 'pattern', 'schulte', 'digitSpan', 'reverseWord', 'oddOneOut', 'reactionTime', 'directionalSwipe', 'numberPyramid', 'vowelHunter', 'speedMatch', 'emojiHunt', 'wordScramble', 'logicTraps', 'imagePuzzle', 'wordChain'];
@@ -101,7 +99,6 @@ export default function Home() {
 
   const rank = getRankDetails(stats.brainScore);
 
-  // Layout wrapper to handle Bottom Nav visibility
   const renderContent = () => {
     if (activeView === 'profile') {
       return <ProfileView stats={stats} onBack={() => setActiveView('none')} brainAge={brainAge} />;
@@ -180,7 +177,28 @@ export default function Home() {
           </div>
         </header>
 
-        <main className="container mx-auto px-4 -mt-10 space-y-8 max-w-6xl">
+        <main className="container mx-auto px-4 -mt-10 space-y-6 max-w-6xl">
+          {/* Daily Bonus Section - Moved to top */}
+          <Card 
+            className="rounded-[2rem] border-none shadow-xl bg-gradient-to-br from-amber-400 to-orange-500 text-white overflow-hidden p-6 cursor-pointer hover:shadow-2xl transition-all active:scale-[0.98] group"
+            onClick={() => window.open('https://www.profitablecpmratenetwork.com/e0tukiugmg?key=aa66468bdeeef3c2c0bf8a69a613d8ae', '_blank')}
+          >
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="bg-white/20 p-3 rounded-2xl group-hover:bg-white/30 transition-colors">
+                  <Sparkles className="w-8 h-8 text-white animate-pulse" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black tracking-tight">Your Daily Bonus</h3>
+                  <p className="text-[10px] font-bold uppercase tracking-widest opacity-80">Click here to claim your reward</p>
+                </div>
+              </div>
+              <div className="bg-white/10 p-2 rounded-full">
+                <ChevronRight className="w-5 h-5" />
+              </div>
+            </div>
+          </Card>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Card className="rounded-[2rem] border-none shadow-lg bg-card overflow-hidden p-5">
               <div className="flex items-center justify-between mb-3">
@@ -363,27 +381,6 @@ export default function Home() {
               />
             </div>
           </section>
-
-          {/* Daily Bonus Section */}
-          <Card 
-            className="rounded-[2rem] border-none shadow-xl bg-gradient-to-br from-amber-400 to-orange-500 text-white overflow-hidden p-6 cursor-pointer hover:shadow-2xl transition-all active:scale-[0.98] group"
-            onClick={() => window.open('https://www.profitablecpmratenetwork.com/e0tukiugmg?key=aa66468bdeeef3c2c0bf8a69a613d8ae', '_blank')}
-          >
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-4">
-                <div className="bg-white/20 p-3 rounded-2xl group-hover:bg-white/30 transition-colors">
-                  <Sparkles className="w-8 h-8 text-white animate-pulse" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-black tracking-tight">Your Daily Bonus</h3>
-                  <p className="text-[10px] font-bold uppercase tracking-widest opacity-80">Click here to claim your reward</p>
-                </div>
-              </div>
-              <div className="bg-white/10 p-2 rounded-full">
-                <ChevronRight className="w-5 h-5" />
-              </div>
-            </div>
-          </Card>
 
           <Card className="border-none shadow-lg bg-card overflow-hidden rounded-[2rem]">
             <CardHeader className="pb-2 p-5">
