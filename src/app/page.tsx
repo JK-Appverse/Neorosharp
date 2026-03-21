@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -30,6 +31,7 @@ import LogicTraps from '@/components/games/LogicTraps';
 import ImagePuzzle from '@/components/games/ImagePuzzle';
 import WordChain from '@/components/games/WordChain';
 import VersusMode from '@/components/games/VersusMode';
+import AdBanner from '@/components/AdBanner';
 
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -113,6 +115,7 @@ export default function Home() {
       return (
         <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
           <div className="w-full max-w-2xl">
+            <AdBanner />
             {activeView === 'stroop' && <StroopTest onBack={() => setActiveView('none')} />}
             {activeView === 'math' && <MathRush onBack={() => setActiveView('none')} />}
             {activeView === 'pattern' && <PatternRecall onBack={() => setActiveView('none')} />}
@@ -130,6 +133,7 @@ export default function Home() {
             {activeView === 'logicTraps' && <LogicTraps onBack={() => setActiveView('none')} />}
             {activeView === 'imagePuzzle' && <ImagePuzzle onBack={() => setActiveView('none')} />}
             {activeView === 'wordChain' && <WordChain onBack={() => setActiveView('none')} />}
+            <AdBanner />
           </div>
         </div>
       );
@@ -178,7 +182,10 @@ export default function Home() {
         </header>
 
         <main className="container mx-auto px-4 mt-6 space-y-6 max-w-6xl">
-          {/* Daily Bonus Section - Top with better clearance */}
+          {/* Ad 1 */}
+          <AdBanner />
+
+          {/* Daily Bonus Section */}
           <Card 
             className="rounded-[2rem] border-none shadow-xl bg-gradient-to-br from-amber-400 to-orange-500 text-white overflow-hidden p-6 cursor-pointer hover:shadow-2xl transition-all active:scale-[0.98] group"
             onClick={() => window.open('https://www.profitablecpmratenetwork.com/e0tukiugmg?key=aa66468bdeeef3c2c0bf8a69a613d8ae', '_blank')}
@@ -198,6 +205,9 @@ export default function Home() {
               </div>
             </div>
           </Card>
+
+          {/* Ad 2 */}
+          <AdBanner />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Card className="rounded-[2rem] border-none shadow-lg bg-card overflow-hidden p-5">
@@ -231,6 +241,9 @@ export default function Home() {
               </div>
             </Card>
           </div>
+
+          {/* Ad 3 */}
+          <AdBanner />
 
           <section>
             <div className="flex flex-col items-center justify-center mb-6 px-2">
@@ -382,6 +395,9 @@ export default function Home() {
             </div>
           </section>
 
+          {/* Ad 4 */}
+          <AdBanner />
+
           <Card className="border-none shadow-lg bg-card overflow-hidden rounded-[2rem]">
             <CardHeader className="pb-2 p-5">
               <CardTitle className="flex items-center gap-2 text-lg font-black">
@@ -416,6 +432,9 @@ export default function Home() {
               )}
             </CardContent>
           </Card>
+
+          {/* Ad 5 */}
+          <AdBanner />
         </main>
         
         {/* Mobile Bottom Navigation */}
