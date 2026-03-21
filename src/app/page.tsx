@@ -139,7 +139,7 @@ export default function Home() {
 
     return (
       <div className="min-h-screen pb-24 bg-background">
-        <header className="bg-primary pt-10 pb-20 px-4 text-white relative">
+        <header className="bg-primary pt-10 pb-16 px-4 text-white relative">
           <div className="container mx-auto max-w-6xl">
             <div className="flex items-center justify-between mb-8">
               <div className="flex items-center gap-2">
@@ -177,8 +177,8 @@ export default function Home() {
           </div>
         </header>
 
-        <main className="container mx-auto px-4 -mt-10 space-y-6 max-w-6xl">
-          {/* Daily Bonus Section - Moved to top */}
+        <main className="container mx-auto px-4 mt-6 space-y-6 max-w-6xl">
+          {/* Daily Bonus Section - Top with better clearance */}
           <Card 
             className="rounded-[2rem] border-none shadow-xl bg-gradient-to-br from-amber-400 to-orange-500 text-white overflow-hidden p-6 cursor-pointer hover:shadow-2xl transition-all active:scale-[0.98] group"
             onClick={() => window.open('https://www.profitablecpmratenetwork.com/e0tukiugmg?key=aa66468bdeeef3c2c0bf8a69a613d8ae', '_blank')}
